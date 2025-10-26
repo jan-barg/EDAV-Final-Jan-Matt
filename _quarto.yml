@@ -8,9 +8,9 @@ execute:
 book:
   title: "YOUR PROJECT TITLE"
   author:
-    - AUTHOR1 (UNI1)
-    - AUTHOR2 (UNI2)
-  repo-url: https://github.com/YOUR_GITHUB_ACCOUNT/REPO_NAME
+    - Jan Barganowski (jgb2170)
+    - Matt Pisinski (mp4523)
+  repo-url: https://github.com/jan-barg/EDAV-Final-Jan-Matt.git
   date: today
   page-footer:
     right: |
@@ -24,7 +24,7 @@ book:
 
 format:
   html:
-    theme: cosmo
+    theme: litera
     code-fold: true
 
 
