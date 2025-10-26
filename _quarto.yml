@@ -6,7 +6,7 @@ execute:
   echo: true
 
 book:
-  title: "YOUR PROJECT TITLE"
+  title: "Economic Growth and the Shrinking Family: A Cross-Country Exploration"
   author:
     - Jan Barganowski (jgb2170)
     - Matt Pisinski (mp4523)
