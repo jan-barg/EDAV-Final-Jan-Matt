@@ -1,7 +1,5 @@
 ### TODO
 
-- [ ] Come up with a Title
-
 - [ ] Introduction:
 
 Explain why you chose this topic, and the questions you are interested in studying. Provide context for readers who are not familiar with the topic. (suggested length: one paragraph)

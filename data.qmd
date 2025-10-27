@@ -1,5 +1,6 @@
 # Data
 Our data will come from the [Federal Reserve Bank of St. Louis’s FRED (Federal Reserve Economic Data)](https://www.stlouisfed.org) database. FRED compiles and maintains a wide range of economic and demographic indicators collected by government agencies and international organizations such as the World Bank, IMF, and OECD. The data are reported in structured time series format, usually at monthly, quarterly, or annual frequencies depending on the indicator. Each series includes detailed metadata on measurement units, coverage, and source methodology. For our project, we plan to use country-level data on fertility rates and economic growth indicators. One challenge we might face is that the time ranges and reporting frequencies can differ across datasets, which may require some cleaning and alignment before analysis. Since there is no multi-country dataset that covers all the nations we’re interested in, we will write a python script that downloads each investigated country’s data via API and then compiles a master dataset to work with. Here are example datasets for the United States of America that we would use. Many of these are available for multiple countries, hence we would scrape the same datasets, with identical units of measure, for multiple countries.
+
 ## Description
 
 **Fertility Rate** — [FRED Series](https://fred.stlouisfed.org/series/SPDYNTFRTINUSA)  
@@ -18,3 +19,16 @@ This data comes from the [Organization for Economic Co-operation and Development
 This data comes from the [World Bank](https://www.worldbank.org/ext/en/home). The Gini index measures income inequality by calculating the area between the Lorenz curve and the line of perfect equality, where 0 represents perfect equality and 100 represents perfect inequality.
 
 ## Missing value analysis
+
+For the data collection, we will scrape data for selected countries and then assess **data completeness**, as the datasets vary in their time scope from country to country. Once we evaluate missing data, we aim to address the following questions:
+
+1. **Timeframe Selection:**  
+   What timeframe allows us to gain valuable insights without having to impute a significant portion of the data (since heavy imputation could introduce inaccuracies)?
+
+2. **Country Selection:**  
+   Which countries provide a holistic overview of birth rates and their correlations with our selected economic and social indicators?
+
+3. **Handling Missing Data:**  
+   How should we address missing values while preserving accuracy and comparability to the highest extent possible?
+
+Our plan is to first compile the raw datasets via API (using Python) for each indicator and country, merge them into a master dataset, and then perform exploratory analysis on the combined and cleaned data.
