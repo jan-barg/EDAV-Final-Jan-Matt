@@ -1,5 +1,20 @@
 # Data
-Our data will come from the Federal Reserve Bank of St. Louis’s FRED (Federal Reserve Economic Data) database. FRED compiles and maintains a wide range of economic and demographic indicators collected by government agencies and international organizations such as the World Bank, IMF, and OECD. The data are reported in structured time series format, usually at monthly, quarterly, or annual frequencies depending on the indicator. Each series includes detailed metadata on measurement units, coverage, and source methodology. For our project, we plan to use country-level data on fertility rates and economic growth indicators. One challenge we might face is that the time ranges and reporting frequencies can differ across datasets, which may require some cleaning and alignment before analysis. Since there is no multi-country dataset that covers all the nations we’re interested in, we will write a python script that downloads each investigated country’s data via API and then compiles a master dataset to work with.
+Our data will come from the [Federal Reserve Bank of St. Louis’s FRED (Federal Reserve Economic Data)](https://www.stlouisfed.org) database. FRED compiles and maintains a wide range of economic and demographic indicators collected by government agencies and international organizations such as the World Bank, IMF, and OECD. The data are reported in structured time series format, usually at monthly, quarterly, or annual frequencies depending on the indicator. Each series includes detailed metadata on measurement units, coverage, and source methodology. For our project, we plan to use country-level data on fertility rates and economic growth indicators. One challenge we might face is that the time ranges and reporting frequencies can differ across datasets, which may require some cleaning and alignment before analysis. Since there is no multi-country dataset that covers all the nations we’re interested in, we will write a python script that downloads each investigated country’s data via API and then compiles a master dataset to work with. Here are example datasets for the United States of America that we would use. Many of these are available for multiple countries, hence we would scrape the same datasets, with identical units of measure, for multiple countries.
 ## Description
+
+**Fertility Rate** — [FRED Series](https://fred.stlouisfed.org/series/SPDYNTFRTINUSA)  
+This data set is specifically from the [World Bank](https://www.worldbank.org/ext/en/home). It is a time series dataset for the fertility rate in the United States as Births Per Woman from 1960 to 2023.
+
+**Constant GDP Per Capita** — [FRED Series](https://fred.stlouisfed.org/series/NYGDPPCAPKDUSA)  
+This data set is comes from the [World Bank](https://www.worldbank.org/ext/en/home). It is a time series dataset of the GDP per capita for the US from 1960 to 2025.
+
+**Employment-to-Population Ratio** — [FRED Series](https://fred.stlouisfed.org/series/EMRATIO)  
+This data set is from the [U.S. Bureau of Labor Statistics](https://www.bls.gov). It is a time series dataset that shows the employment rate to population ratio as a percentage.
+
+**Inactivity Rate Female: Ages 15–64** — [FRED Series](https://fred.stlouisfed.org/series/LRIN64FEUSM156S)  
+This data comes from the [Organization for Economic Co-operation and Development (OECD)](https://www.oecd.org/en.html), and it is a time series dataset that shows the inactivity rate (defined as the proportion of the population that is not working and not actively looking for a job) of females aged 15–64 as a percentage.
+
+**Gini Index** — [FRED Series](https://fred.stlouisfed.org/series/SIPOVGINIUSA)  
+This data comes from the [World Bank](https://www.worldbank.org/ext/en/home). The Gini index measures income inequality by calculating the area between the Lorenz curve and the line of perfect equality, where 0 represents perfect equality and 100 represents perfect inequality.
 
 ## Missing value analysis
