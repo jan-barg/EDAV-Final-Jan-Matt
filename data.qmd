@@ -1,40 +1,41 @@
 # Data
+
 Our data will come from the [Federal Reserve Bank of St. Louis’s FRED (Federal Reserve Economic Data)](https://www.stlouisfed.org) database. FRED compiles and maintains a wide range of economic and demographic indicators collected by government agencies and international organizations such as the World Bank, IMF, and OECD. The data are reported in structured time series format, usually at monthly, quarterly, or annual frequencies depending on the indicator. Each series includes detailed metadata on measurement units, coverage, and source methodology. For our project, we plan to use country-level data on fertility rates and economic growth indicators. One challenge we might face is that the time ranges and reporting frequencies can differ across datasets, which may require some cleaning and alignment before analysis. Since there is no multi-country dataset that covers all the nations we’re interested in, we will write a python script that downloads each investigated country’s data via API and then compiles a master dataset to work with. Here are example datasets for the United States of America that we would use. Many of these are available for multiple countries, hence we would scrape the same datasets, with identical units of measure, for multiple countries.
 
 ## Description
 
-**Fertility Rate** — [FRED Series](https://fred.stlouisfed.org/series/SPDYNTFRTINUSA)  
+**Fertility Rate** — [FRED Series](https://fred.stlouisfed.org/series/SPDYNTFRTINUSA)
 This data set is specifically from the [World Bank](https://www.worldbank.org/ext/en/home). It is a time series dataset for the fertility rate in the United States as Births Per Woman from 1960 to 2023.
 
-**Constant GDP Per Capita** — [FRED Series](https://fred.stlouisfed.org/series/NYGDPPCAPKDUSA)  
+**Constant GDP Per Capita** — [FRED Series](https://fred.stlouisfed.org/series/NYGDPPCAPKDUSA)
 This data set is comes from the [World Bank](https://www.worldbank.org/ext/en/home). It is a time series dataset of the GDP per capita for the US from 1960 to 2025.
 
-**Employment-to-Population Ratio** — [FRED Series](https://fred.stlouisfed.org/series/EMRATIO)  
+**Employment-to-Population Ratio** — [FRED Series](https://fred.stlouisfed.org/series/EMRATIO)
 This data set is from the [World Bank](https://www.worldbank.org/ext/en/home). It is a time series dataset that shows the employment rate to population ratio as a percentage.
 
-**Female Labor Force Participation Rate (Ages 15+)** — [World Bank Indicator](https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=US)  
+**Female Labor Force Participation Rate (Ages 15+)** — [World Bank Indicator](https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=US)
 This dataset comes from the [World Bank](https://www.worldbank.org/ext/en/home), and it measures the percentage of women ages 15 and older who are part of the labor force—that is, women who are either employed or actively seeking employment. It provides insight into female engagement in the economy and helps assess how social, economic, and policy factors influence gender participation in the workforce. The data are reported annually and are available for most countries beginning in 1990.
 
-**Gini Index** — [FRED Series](https://fred.stlouisfed.org/series/SIPOVGINIUSA)  
+**Gini Index** — [FRED Series](https://fred.stlouisfed.org/series/SIPOVGINIUSA)
 This data comes from the [World Bank](https://www.worldbank.org/ext/en/home). The Gini index measures income inequality by calculating the area between the Lorenz curve and the line of perfect equality, where 0 represents perfect equality and 100 represents perfect inequality.
 
-**Total Population** — [FRED Series](https://fred.stlouisfed.org/series/POPTOTUSA647NWDB)  
+**Total Population** — [FRED Series](https://fred.stlouisfed.org/series/POPTOTUSA647NWDB)
 This data, sourced from the [World Bank](https://www.worldbank.org/ext/en/home), shows the country's total population. It might be useful in investigating whether immigration policies compensate for below-replacement birthrates.
 
-**Net Migration** — [World Bank Indicator](https://data.worldbank.org/indicator/SM.POP.NETM?locations=US)  
+**Net Migration** — [World Bank Indicator](https://data.worldbank.org/indicator/SM.POP.NETM?locations=US)
 This data set comes from the [World Bank](https://www.worldbank.org/ext/en/home) and measures the net migration rate, defined as the difference between the number of immigrants and the number of emigrants for a country over a course of a year. Positive values indicate that more people are entering the country than leaving, while negative values indicate net emigration. This variable is particularly relevant for our analysis, as migration inflows can offset demographic decline caused by falling fertility rates. We also plan to examine possible lag effects between changes in migration and subsequent shifts in population growth.
 
 ## Data Collection Plan
 
 For the data collection, we will scrape data for selected countries and then assess **data completeness**, as the datasets vary in their time scope from country to country. Once we evaluate missing data, we aim to address the following questions:
 
-1. **Country Selection:**  
+1. **Country Selection:**
    Which countries provide a holistic overview of birth rates and their correlations with our selected economic and social indicators?
 
-2. **Timeframe Selection:**  
+2. **Timeframe Selection:**
    What timeframe allows us to gain valuable insights without having to impute a significant portion of the data (since heavy imputation could introduce inaccuracies)?
 
-3. **Handling Missing Data:**  
+3. **Handling Missing Data:**
    How should we address missing values while preserving accuracy and comparability to the highest extent possible?
 
 Our plan is to first compile the raw datasets via API (using Python) for each indicator and country, merge them into a master dataset, and then perform exploratory analysis on the combined and cleaned data.
@@ -45,14 +46,14 @@ To gain a holistic global overview of the declining birthrate problem, we decide
 
 The final country selection is structured as follows:
 
-| **Region**        | **Country**        | **Rationale** |
-|--------------------|--------------------|----------------|
-| **North America**  | United States 🇺🇸<br>Canada 🇨🇦 | Advanced economies with stable but below-replacement fertility; strong immigration inflows sustain population growth. |
-| **Europe**         | Germany 🇩🇪<br>Sweden 🇸🇪<br>Poland 🇵🇱 | Contrasting European cases: Western vs. Central; differing immigration policies, labor structures, and fertility recovery trends. |
-| **Asia**           | India 🇮🇳<br>China 🇨🇳<br>Japan 🇯🇵<br>South Korea 🇰🇷 | Broad spectrum of development and demographic stages, from rapid growth to severe aging and fertility decline. |
-| **Africa**         | Nigeria 🇳🇬<br>South Africa 🇿🇦 | High-fertility versus mid-transition economies; provide insight into the early stages of demographic transition. |
-| **South America**  | Brazil 🇧🇷 | Emerging economy experiencing a steady decline in fertility while maintaining moderate population growth. |
-| **Oceania**        | Australia 🇦🇺 | Immigration-driven growth with below-replacement fertility; valuable case for lag analysis between migration and population stabilization. |
+| **Region**        | **Country**                                                | **Rationale**                                                                                                                              |
+| ----------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| **North America** | United States 🇺🇸<br>Canada 🇨🇦                          | Advanced economies with stable but below-replacement fertility; strong immigration inflows sustain population growth.                      |
+| **Europe**        | Germany 🇩🇪<br>Sweden 🇸🇪<br>Poland 🇵🇱                 | Contrasting European cases: Western vs. Central; differing immigration policies, labor structures, and fertility recovery trends.          |
+| **Asia**          | India 🇮🇳<br>China 🇨🇳<br>Japan 🇯🇵<br>South Korea 🇰🇷 | Broad spectrum of development and demographic stages, from rapid growth to severe aging and fertility decline.                             |
+| **Africa**        | Nigeria 🇳🇬<br>South Africa 🇿🇦                          | High-fertility versus mid-transition economies; provide insight into the early stages of demographic transition.                           |
+| **South America** | Brazil 🇧🇷                                                | Emerging economy experiencing a steady decline in fertility while maintaining moderate population growth.                                  |
+| **Oceania**       | Australia 🇦🇺                                             | Immigration-driven growth with below-replacement fertility; valuable case for lag analysis between migration and population stabilization. |
 
 ## Data Collection
 
@@ -61,55 +62,17 @@ The data collection was done using API calls to the FRED and World Bank database
 ## Date Range Selection
 
 ```{r}
-#| label: missing-summary
-#| message: false
-#| warning: false
-
-library(dplyr)
-library(readr)
-
-# ---- Set your input file here ----
-file_path <- "./data-gathering/data/clean/master_long.csv"  # <--- change if needed
-
-# ---- Read & coerce types ----
+#| label: load-and-coverage
+# Load once
 master_long <- read_csv(file_path, show_col_types = FALSE) |>
   mutate(
     year  = as.integer(year),
     value = suppressWarnings(as.numeric(value))
   )
 
-# ---- Helper to compute % years absent within first/last non-missing ----
-compute_year_gaps <- function(yrs_nonmiss) {
-  if (length(yrs_nonmiss) == 0L) {
-    return(list(
-      first_non_missing_year = NA_integer_,
-      last_non_missing_year  = NA_integer_,
-      total_years_in_range   = NA_integer_,
-      years_present          = 0L,
-      years_missing          = NA_integer_,
-      pct_years_missing      = NA_real_
-    ))
-  }
-  first_y <- min(yrs_nonmiss)
-  last_y  <- max(yrs_nonmiss)
-  full_seq <- seq.int(first_y, last_y)
-  present  <- length(unique(yrs_nonmiss))
-  total    <- length(full_seq)
-  missing  <- total - present
-  list(
-    first_non_missing_year = first_y,
-    last_non_missing_year  = last_y,
-    total_years_in_range   = total,
-    years_present          = present,
-    years_missing          = missing,
-    pct_years_missing      = missing / total
-  )
-}
-
-# ---- Compute per country-variable ----
+# Coverage by first/last non-missing
 missing_summary <- master_long |>
   group_by(country, variable) |>
-  # work only with years that have non-missing, finite values
   reframe({
     yrs_nonmiss <- year[is.finite(value) & !is.na(value)]
     out <- compute_year_gaps(yrs_nonmiss)
@@ -131,24 +94,10 @@ missing_summary <- master_long |>
     )
   ) |>
   arrange(country, variable)
-
-# ---- Show table ----
-
 ```
+
 ```{r}
 #| label: coverage-table
-#| tbl-cap: "Coverage range by country and variable"
-#| message: false
-#| warning: false
-
-library(dplyr)
-library(tidyr)
-library(readr)
-
-# Optional: reload missing_summary if not in memory
-# missing_summary <- read_csv("outputs/missing_summary.csv")
-
-# Create a compact [start–end] string for each variable-country combo
 coverage_table <- missing_summary |>
   mutate(
     coverage = ifelse(
@@ -158,14 +107,8 @@ coverage_table <- missing_summary |>
     )
   ) |>
   select(country, variable, coverage) |>
-  pivot_wider(
-    names_from = variable,
-    values_from = coverage
-  ) |>
-  arrange(country)
-
-# Optionally rename columns to more readable titles
-coverage_table <- coverage_table |>
+  pivot_wider(names_from = variable, values_from = coverage) |>
+  arrange(country) |>
   rename(
     `Country` = country,
     `Employment-to-Population Ratio` = emp_to_pop,
@@ -176,8 +119,6 @@ coverage_table <- coverage_table |>
     `Net Migration` = net_migration,
     `Total Population` = total_population
   )
-
-library(gt)
 
 coverage_table |>
   gt() |>
@@ -197,19 +138,18 @@ coverage_table |>
   opt_table_font(font = "Arial") |>
   opt_all_caps() |>
   opt_table_lines()
-
 ```
+
 As shown by the data coverage table, the data differ in years covered across variables and countries. While certain variables (Fertility Rate, Net Migration, Total Population) span over 60 years for each country, others (most notably, Gini Index), have significantly shorter spans - for example, Japan's Gini Index is only known for the 2008-2020 range.
 
 While 1960 is the first year of recorded observations for Fertility Rate, GDP per Capita, Net Migration, and Total Population, OECD indeces (Employment-to-Population Ratio and Female Labor Force Participation) are available starting from 1991 and 1990, respectively.
 
-Considering these date ranges across countries and variables, we can explore the interactions between long-spanning variables as the primary part of this investigation, using Employment-to-Population ratio, Female Labor Force Participation Rate, and Gini Index as auxillary variables to contextualize and enrich the analysis where their data is available.
-With this hybrid approach, we can maximize both temporal coverage and analytical depth, enabling broad trend analysis while still leveraging the socio-economic context captured by shorter-range indicators.
+Considering these date ranges across countries and variables, we can explore the interactions between long-spanning variables as the primary part of this investigation, using Employment-to-Population ratio, Female Labor Force Participation Rate, and Gini Index as auxillary variables to contextualize and enrich the analysis where their data is available. With this hybrid approach, we can maximize both temporal coverage and analytical depth, enabling broad trend analysis while still leveraging the socio-economic context captured by shorter-range indicators.
 
 Considering that almost all variables cover data up to 2023, we decide to cap our exploration at 2023, and stick to the following date ranges for:
-- 1960-2023 for Fertiity Rate, Constant GDP Per Capita, Net Migration, and Total Population
-- 1991-2023 for Employment-to-Population Ratio, Female Labor Force Participation Rate, and Gini Index
 
+* 1960–2023 for Fertiity Rate, Constant GDP Per Capita, Net Migration, and Total Population
+* 1991–2023 for Employment-to-Population Ratio, Female Labor Force Participation Rate, and Gini Index
 
 ## Missing value analysis
 
@@ -217,90 +157,39 @@ With the aforementioned date ranges in mind, we can proceed to analyzing missing
 
 ```{r}
 #| label: make-range-filtered-data
-#| message: false
-#| warning: false
-
-library(dplyr)
-library(readr)
-library(tibble)
-
-file_path <- "./data-gathering/data/clean/master_long.csv"
-master_long <- read_csv(file_path, show_col_types = FALSE) |>
-  mutate(
-    year  = as.integer(year),
-    value = suppressWarnings(as.numeric(value))
-  )
-
-# ------------------------------------------------------------
-# variable-specific year windows
-#   1960–2023: fertility_rate, gdp_capita_const, net_migration, total_population
-#   1991–2023: emp_to_pop, flfpr, gini_index
-# ------------------------------------------------------------
-end_year <- 2023L
-
-var_start_years <- tribble(
-  ~variable,            ~start_year,
-  "fertility_rate",       1960L,
-  "gdp_capita_const",     1960L,
-  "net_migration",        1960L,
-  "total_population",     1960L,
-  "emp_to_pop",           1991L,
-  "flfpr",                1990L,
-  "gini_index",           1991L
-)
-
-
 range_filtered_data <- master_long |>
   inner_join(var_start_years, by = "variable") |>
   filter(year >= start_year, year <= end_year) |>
   select(country, year, variable, value) |>
   arrange(country, variable, year)
 
- 
- range_filtered_data |>
-   group_by(variable) |>
-   summarise(min_year = min(year), max_year = max(year), .groups = "drop")
-
-
+# (optional) quick check
+# range_filtered_data |>
+#   group_by(variable) |>
+#   summarise(min_year = min(year), max_year = max(year), .groups = "drop")
 ```
 
 ```{r}
-#| label: missing-analysis-corrected
-#| message: false
-#| warning: false
-
-library(dplyr)
-library(tidyr)
-library(forcats)
-library(ggplot2)
-library(scales)
-
-
-
-# 1) Missingness per country–variable within the window
-missing_summary <- range_filtered_data |>
+#| label: missing-analysis-window-aware
+missing_summary_window <- range_filtered_data |>
   inner_join(var_start_years, by = "variable") |>
   group_by(country, variable, start_year) |>
   summarise(
-    # years with actual (finite, non-NA) values present
-    years_present = dplyr::n_distinct(year[is.finite(value) & !is.na(value)]),
+    years_present = n_distinct(year[is.finite(value) & !is.na(value)]),
     .groups = "drop_last"
   ) |>
   mutate(
-    end_year            = end_year,
-    total_years_window  = end_year - start_year + 1L,
-    years_missing       = total_years_window - years_present,
-    pct_years_missing   = years_missing / total_years_window,
-    date_range          = paste0(start_year, "–", end_year)
+    end_year           = end_year,
+    total_years_window = end_year - start_year + 1L,
+    years_missing      = total_years_window - years_present,
+    pct_years_missing  = years_missing / total_years_window,
+    date_range         = paste0(start_year, "–", end_year)
   ) |>
   ungroup() |>
   arrange(country, variable)
 
-# Show full table
-print(missing_summary, n = Inf)
-
-# 2) Aggregated view by variable (how widespread the gaps are)
-missing_by_variable <- missing_summary |>
+# Aggregated view by variable
+missing_by_variable <- missing_summary_window |>
   group_by(variable) |>
   summarise(
     countries_with_missing = sum(pct_years_missing > 0, na.rm = TRUE),
@@ -310,10 +199,8 @@ missing_by_variable <- missing_summary |>
   ) |>
   arrange(desc(mean_pct_missing))
 
-missing_by_variable
-
-# 3) Heatmap (ensures zero-missing tiles appear)
-plot_df <- missing_summary |>
+# Heatmap with labels on missing cells
+plot_df <- missing_summary_window |>
   select(country, variable, pct_years_missing) |>
   complete(country, variable, fill = list(pct_years_missing = 0)) |>
   mutate(
@@ -321,7 +208,6 @@ plot_df <- missing_summary |>
     country  = fct_reorder(country,  pct_years_missing, .fun = mean, .desc = TRUE)
   )
 
-# ---- Heatmap with labels for cells where missing > 0 ----
 ggplot(plot_df, aes(x = variable, y = country, fill = pct_years_missing)) +
   geom_tile(color = "grey90", linewidth = 0.3) +
   geom_text(
@@ -345,56 +231,39 @@ ggplot(plot_df, aes(x = variable, y = country, fill = pct_years_missing)) +
     axis.text.x = element_text(angle = 40, hjust = 1),
     panel.grid = element_blank()
   )
-
 ```
-We see that we are missing significant proportions of Gini Index values for most countries in the covered range. With >40% missing, these are essentially incomputable and not viable for statistical analysis in combination with the other variables.
-Thus, we can treat the Gini Index as an extra variable that serves a contextual and interpretive role rather than a primary analytical one. It can be used to illustrate patterns or disparities in income inequality where data is available, but it should not be included in quantitative analyses or cross-variable comparisons due to its inconsistent coverage. 
+
+We see that we are missing significant proportions of Gini Index values for most countries in the covered range. With >40% missing, these are essentially incomputable and not viable for statistical analysis in combination with the other variables. Thus, we can treat the Gini Index as an extra variable that serves a contextual and interpretive role rather than a primary analytical one. It can be used to illustrate patterns or disparities in income inequality where data is available, but it should not be included in quantitative analyses or cross-variable comparisons due to its inconsistent coverage.
+
 ```{r}
 #| label: gini-missing-heatmap
-#| message: false
-#| warning: false
-
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(forcats)
-library(scales)
-
-# Use your window for Gini
 gini_start <- 1991L
 gini_end   <- 2023L
 
-# Countries that have Gini in your dataset
-gini_countries <- range_filtered_data %>%
-  filter(variable == "gini_index") %>%
+gini_countries <- range_filtered_data |>
+  filter(variable == "gini_index") |>
   distinct(country)
 
-# Build complete grid of (country, year) for the window
-gini_grid <- gini_countries %>%
+gini_grid <- gini_countries |>
   crossing(year = gini_start:gini_end)
 
-# Join the actual observations
-gini_long <- gini_grid %>%
+gini_long <- gini_grid |>
   left_join(
-    range_filtered_data %>%
-      filter(variable == "gini_index") %>%
+    range_filtered_data |>
+      filter(variable == "gini_index") |>
       transmute(country, year, value = as.numeric(value)),
     by = c("country", "year")
-  ) %>%
+  ) |>
   mutate(present = ifelse(is.finite(value) & !is.na(value), "Present", "Missing"))
 
-# Order countries by % missing (desc) to surface the worst offenders
-gini_order <- gini_long %>%
-  group_by(country) %>%
-  summarise(pct_missing = mean(present == "Missing"), .groups = "drop") %>%
+gini_order <- gini_long |>
+  group_by(country) |>
+  summarise(pct_missing = mean(present == "Missing"), .groups = "drop") |>
   arrange(desc(pct_missing))
 
-gini_long <- gini_long %>%
-  mutate(
-    country = factor(country, levels = gini_order$country)
-  )
+gini_long <- gini_long |>
+  mutate(country = factor(country, levels = gini_order$country))
 
-# Plot
 ggplot(gini_long, aes(x = year, y = country, fill = present)) +
   geom_tile(color = "white", linewidth = 0.15) +
   scale_x_continuous(breaks = seq(gini_start, gini_end, by = 4)) +
@@ -409,31 +278,12 @@ ggplot(gini_long, aes(x = year, y = country, fill = present)) +
     panel.grid = element_blank(),
     axis.text.x = element_text(angle = 40, hjust = 1)
   )
-
 ```
 
-
-
-One more problem that we can observe in the data missingness table is the fact that 46.9% of the data between 1960 and 2023 is missing for GDP per Capita in Poland. Poland's GDP data was only reliably reported after 1989, when the communist regime fell in the country. Thus, historical GDP data prior to the early 1990s is often incomplete or unavailable due to differences in accounting standards, data collection methods, and limited integration with international databases such as the World Bank.
-Therefore, for Poland, we will retain this gap rather than imputing values to preserve data consistency across sources.
+One more problem that we can observe in the data missingness table is the fact that 46.9% of the data between 1960 and 2023 is missing for GDP per Capita in Poland. Poland's GDP data was only reliably reported after 1989, when the communist regime fell in the country. Thus, historical GDP data prior to the early 1990s is often incomplete or unavailable due to differences in accounting standards, data collection methods, and limited integration with international databases such as the World Bank. Therefore, for Poland, we will retain this gap rather than imputing values to preserve data consistency across sources.
 
 ```{r}
 #| label: poland-gdp-missing-plot
-#| message: false
-#| warning: false
-
-library(dplyr)
-library(readr)
-library(ggplot2)
-library(scales)
-library(tidyr)
-library(glue)
-
-# --- Load if needed (comment out if master_long already in memory) ---
-# file_path <- "./data-gathering/data/clean/master_long.csv"
-# master_long <- read_csv(file_path, show_col_types = FALSE)
-
-# --- Build full-year frame (1960–2023) and join Poland GDP series ---
 pol_gdp <- master_long |>
   filter(country == "POL", variable == "gdp_capita_const") |>
   transmute(year = as.integer(year),
@@ -444,7 +294,7 @@ full <- tibble(year = 1960:2023) |>
   arrange(year) |>
   mutate(is_missing = is.na(value) | !is.finite(value))
 
-# --- Compute contiguous missing intervals for shading ---
+# contiguous missing spans for shading
 r <- rle(full$is_missing)
 ends   <- cumsum(r$lengths)
 starts <- ends - r$lengths + 1
@@ -461,25 +311,37 @@ rects <- tibble(
 
 pct_miss <- mean(full$is_missing)
 
-# --- Plot: shaded gaps + series where present ---
 ggplot(full, aes(x = year, y = value)) +
-  # Shade missing spans
   geom_rect(data = rects,
             aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf),
             inherit.aes = FALSE, fill = "grey85") +
-  # Draw observed series
   geom_line(na.rm = TRUE) +
   geom_point(size = 1, na.rm = TRUE) +
   labs(
     title    = "Poland — GDP per Capita (constant) 1960–2023",
-    subtitle = glue("Missing years shaded ( {percent(pct_miss)} of window, 1960-1990 )"),
+    subtitle = glue("Missing years shaded ({percent(pct_miss)} of window, 1960-1990)"),
     x = "Year",
     y = "GDP per Capita (constant)"
   ) +
   theme_minimal(base_size = 13) +
   theme(panel.grid.minor = element_blank())
+```
 
+```{r}
+#| label: save-clean-dataset
+#| message: false
+#| warning: false
 
+# Create a folder for processed data if it doesn’t exist
+if (!dir.exists("./data-gathering/data/processed")) {
+  dir.create("./data-gathering/data/processed", recursive = TRUE)
+}
+
+# Save the cleaned, filtered dataset
+write_csv(range_filtered_data, "./data-gathering/data/processed/range_filtered_data.csv")
+
+# Optional: also save RDS (faster, keeps types)
+saveRDS(range_filtered_data, "./data-gathering/data/processed/range_filtered_data.rds")
 
 ```
 
