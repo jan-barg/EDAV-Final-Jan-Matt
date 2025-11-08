@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -211,31 +177,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Our data will come from the <a href="https://www.stlouisfed.org">Federal Reserve Bank of St.&nbsp;Louis’s FRED (Federal Reserve Economic Data)</a> database. FRED compiles and maintains a wide range of economic and demographic indicators collected by government agencies and international organizations such as the World Bank, IMF, and OECD. The data are reported in structured time series format, usually at monthly, quarterly, or annual frequencies depending on the indicator. Each series includes detailed metadata on measurement units, coverage, and source methodology. For our project, we plan to use country-level data on fertility rates and economic growth indicators. One challenge we might face is that the time ranges and reporting frequencies can differ across datasets, which may require some cleaning and alignment before analysis. Since there is no multi-country dataset that covers all the nations we’re interested in, we will write a python script that downloads each investigated country’s data via API and then compiles a master dataset to work with. Here are example datasets for the United States of America that we would use. Many of these are available for multiple countries, hence we would scrape the same datasets, with identical units of measure, for multiple countries.</p>
 <section id="description" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="description"><span class="header-section-number">2.1</span> Description</h2>
-<p><strong>Fertility Rate</strong> — <a href="https://fred.stlouisfed.org/series/SPDYNTFRTINUSA">FRED Series</a><br>
-This data set is specifically from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>. It is a time series dataset for the fertility rate in the United States as Births Per Woman from 1960 to 2023.</p>
-<p><strong>Constant GDP Per Capita</strong> — <a href="https://fred.stlouisfed.org/series/NYGDPPCAPKDUSA">FRED Series</a><br>
-This data set is comes from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>. It is a time series dataset of the GDP per capita for the US from 1960 to 2025.</p>
-<p><strong>Employment-to-Population Ratio</strong> — <a href="https://fred.stlouisfed.org/series/EMRATIO">FRED Series</a><br>
-This data set is from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>. It is a time series dataset that shows the employment rate to population ratio as a percentage.</p>
-<p><strong>Female Labor Force Participation Rate (Ages 15+)</strong> — <a href="https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=US">World Bank Indicator</a><br>
-This dataset comes from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>, and it measures the percentage of women ages 15 and older who are part of the labor force—that is, women who are either employed or actively seeking employment. It provides insight into female engagement in the economy and helps assess how social, economic, and policy factors influence gender participation in the workforce. The data are reported annually and are available for most countries beginning in 1990.</p>
-<p><strong>Gini Index</strong> — <a href="https://fred.stlouisfed.org/series/SIPOVGINIUSA">FRED Series</a><br>
-This data comes from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>. The Gini index measures income inequality by calculating the area between the Lorenz curve and the line of perfect equality, where 0 represents perfect equality and 100 represents perfect inequality.</p>
-<p><strong>Total Population</strong> — <a href="https://fred.stlouisfed.org/series/POPTOTUSA647NWDB">FRED Series</a><br>
-This data, sourced from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>, shows the country’s total population. It might be useful in investigating whether immigration policies compensate for below-replacement birthrates.</p>
-<p><strong>Net Migration</strong> — <a href="https://data.worldbank.org/indicator/SM.POP.NETM?locations=US">World Bank Indicator</a><br>
-This data set comes from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a> and measures the net migration rate, defined as the difference between the number of immigrants and the number of emigrants for a country over a course of a year. Positive values indicate that more people are entering the country than leaving, while negative values indicate net emigration. This variable is particularly relevant for our analysis, as migration inflows can offset demographic decline caused by falling fertility rates. We also plan to examine possible lag effects between changes in migration and subsequent shifts in population growth.</p>
+<p><strong>Fertility Rate</strong> — <a href="https://fred.stlouisfed.org/series/SPDYNTFRTINUSA">FRED Series</a> This data set is specifically from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>. It is a time series dataset for the fertility rate in the United States as Births Per Woman from 1960 to 2023.</p>
+<p><strong>Constant GDP Per Capita</strong> — <a href="https://fred.stlouisfed.org/series/NYGDPPCAPKDUSA">FRED Series</a> This data set is comes from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>. It is a time series dataset of the GDP per capita for the US from 1960 to 2025.</p>
+<p><strong>Employment-to-Population Ratio</strong> — <a href="https://fred.stlouisfed.org/series/EMRATIO">FRED Series</a> This data set is from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>. It is a time series dataset that shows the employment rate to population ratio as a percentage.</p>
+<p><strong>Female Labor Force Participation Rate (Ages 15+)</strong> — <a href="https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=US">World Bank Indicator</a> This dataset comes from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>, and it measures the percentage of women ages 15 and older who are part of the labor force—that is, women who are either employed or actively seeking employment. It provides insight into female engagement in the economy and helps assess how social, economic, and policy factors influence gender participation in the workforce. The data are reported annually and are available for most countries beginning in 1990.</p>
+<p><strong>Gini Index</strong> — <a href="https://fred.stlouisfed.org/series/SIPOVGINIUSA">FRED Series</a> This data comes from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>. The Gini index measures income inequality by calculating the area between the Lorenz curve and the line of perfect equality, where 0 represents perfect equality and 100 represents perfect inequality.</p>
+<p><strong>Total Population</strong> — <a href="https://fred.stlouisfed.org/series/POPTOTUSA647NWDB">FRED Series</a> This data, sourced from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>, shows the country’s total population. It might be useful in investigating whether immigration policies compensate for below-replacement birthrates.</p>
+<p><strong>Net Migration</strong> — <a href="https://data.worldbank.org/indicator/SM.POP.NETM?locations=US">World Bank Indicator</a> This data set comes from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a> and measures the net migration rate, defined as the difference between the number of immigrants and the number of emigrants for a country over a course of a year. Positive values indicate that more people are entering the country than leaving, while negative values indicate net emigration. This variable is particularly relevant for our analysis, as migration inflows can offset demographic decline caused by falling fertility rates. We also plan to examine possible lag effects between changes in migration and subsequent shifts in population growth.</p>
 </section>
 <section id="data-collection-plan" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="data-collection-plan"><span class="header-section-number">2.2</span> Data Collection Plan</h2>
 <p>For the data collection, we will scrape data for selected countries and then assess <strong>data completeness</strong>, as the datasets vary in their time scope from country to country. Once we evaluate missing data, we aim to address the following questions:</p>
 <ol type="1">
-<li><p><strong>Country Selection:</strong><br>
-Which countries provide a holistic overview of birth rates and their correlations with our selected economic and social indicators?</p></li>
-<li><p><strong>Timeframe Selection:</strong><br>
-What timeframe allows us to gain valuable insights without having to impute a significant portion of the data (since heavy imputation could introduce inaccuracies)?</p></li>
-<li><p><strong>Handling Missing Data:</strong><br>
-How should we address missing values while preserving accuracy and comparability to the highest extent possible?</p></li>
+<li><p><strong>Country Selection:</strong> Which countries provide a holistic overview of birth rates and their correlations with our selected economic and social indicators?</p></li>
+<li><p><strong>Timeframe Selection:</strong> What timeframe allows us to gain valuable insights without having to impute a significant portion of the data (since heavy imputation could introduce inaccuracies)?</p></li>
+<li><p><strong>Handling Missing Data:</strong> How should we address missing values while preserving accuracy and comparability to the highest extent possible?</p></li>
 </ol>
 <p>Our plan is to first compile the raw datasets via API (using Python) for each indicator and country, merge them into a master dataset, and then perform exploratory analysis on the combined and cleaned data.</p>
 </section>
@@ -245,9 +201,9 @@ How should we address missing values while preserving accuracy and comparability
 <p>The final country selection is structured as follows:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 35%">
-<col style="width: 35%">
-<col style="width: 28%">
+<col style="width: 7%">
+<col style="width: 27%">
+<col style="width: 64%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -292,161 +248,29 @@ How should we address missing values while preserving accuracy and comparability
 </section>
 <section id="data-collection" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="data-collection"><span class="header-section-number">2.4</span> Data Collection</h2>
-<p>The data collection was done using API calls to the FRED and World Bank databases, using a python script, available <a href="../data-gathering/datafetch.ipynb">here</a>. The script created master-wide and master-long datasets, which will be used as the backbone of this project.</p>
+<p>The data collection was done using API calls to the FRED and World Bank databases, using a python script, available <a href="https://github.com/jan-barg/EDAV-Final-Jan-Matt/blob/main/data-gathering/datafetch.ipynb">here</a>. The script created master-wide and master-long datasets, which will be used as the backbone of this project.</p>
 </section>
 <section id="date-range-selection" class="level2" data-number="2.5">
 <h2 data-number="2.5" class="anchored" data-anchor-id="date-range-selection"><span class="header-section-number">2.5</span> Date Range Selection</h2>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Set your input file here ----</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="st">"./data-gathering/data/clean/master_long.csv"</span>  <span class="co"># &lt;--- change if needed</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Read &amp; coerce types ----</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>master_long <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(file_path, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">year  =</span> <span class="fu">as.integer</span>(year),</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">value =</span> <span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(value))</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Helper to compute % years absent within first/last non-missing ----</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>compute_year_gaps <span class="ot">&lt;-</span> <span class="cf">function</span>(yrs_nonmiss) {</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(yrs_nonmiss) <span class="sc">==</span> <span class="dv">0</span>L) {</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">list</span>(</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">first_non_missing_year =</span> <span class="cn">NA_integer_</span>,</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">last_non_missing_year  =</span> <span class="cn">NA_integer_</span>,</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">total_years_in_range   =</span> <span class="cn">NA_integer_</span>,</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">years_present          =</span> <span class="dv">0</span>L,</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">years_missing          =</span> <span class="cn">NA_integer_</span>,</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">pct_years_missing      =</span> <span class="cn">NA_real_</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    ))</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  first_y <span class="ot">&lt;-</span> <span class="fu">min</span>(yrs_nonmiss)</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  last_y  <span class="ot">&lt;-</span> <span class="fu">max</span>(yrs_nonmiss)</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  full_seq <span class="ot">&lt;-</span> <span class="fu">seq.int</span>(first_y, last_y)</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  present  <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(yrs_nonmiss))</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  total    <span class="ot">&lt;-</span> <span class="fu">length</span>(full_seq)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  missing  <span class="ot">&lt;-</span> total <span class="sc">-</span> present</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">first_non_missing_year =</span> first_y,</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">last_non_missing_year  =</span> last_y,</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_years_in_range   =</span> total,</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">years_present          =</span> present,</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">years_missing          =</span> missing,</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_years_missing      =</span> missing <span class="sc">/</span> total</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Compute per country-variable ----</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>missing_summary <span class="ot">&lt;-</span> master_long <span class="sc">|&gt;</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country, variable) <span class="sc">|&gt;</span></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># work only with years that have non-missing, finite values</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reframe</span>({</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    yrs_nonmiss <span class="ot">&lt;-</span> year[<span class="fu">is.finite</span>(value) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(value)]</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    out <span class="ot">&lt;-</span> <span class="fu">compute_year_gaps</span>(yrs_nonmiss)</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tibble</span>(</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>      <span class="at">first_non_missing_year =</span> out<span class="sc">$</span>first_non_missing_year,</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>      <span class="at">last_non_missing_year  =</span> out<span class="sc">$</span>last_non_missing_year,</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>      <span class="at">total_years_in_range   =</span> out<span class="sc">$</span>total_years_in_range,</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>      <span class="at">years_present          =</span> out<span class="sc">$</span>years_present,</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>      <span class="at">years_missing          =</span> out<span class="sc">$</span>years_missing,</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>      <span class="at">pct_years_missing      =</span> out<span class="sc">$</span>pct_years_missing</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">|&gt;</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">date_range =</span> <span class="fu">ifelse</span>(</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>      <span class="fu">is.na</span>(first_non_missing_year) <span class="sc">|</span> <span class="fu">is.na</span>(last_non_missing_year),</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>      <span class="cn">NA_character_</span>,</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(first_non_missing_year, <span class="st">"–"</span>, last_non_missing_year)</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(country, variable)</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Show table ----</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Optional: reload missing_summary if not in memory</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># missing_summary &lt;- read_csv("outputs/missing_summary.csv")</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a compact [start–end] string for each variable-country combo</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>coverage_table <span class="ot">&lt;-</span> missing_summary <span class="sc">|&gt;</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">coverage =</span> <span class="fu">ifelse</span>(</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">is.na</span>(first_non_missing_year) <span class="sc">|</span> <span class="fu">is.na</span>(last_non_missing_year),</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      <span class="st">"—"</span>,</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(first_non_missing_year, <span class="st">"–"</span>, last_non_missing_year)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, variable, coverage) <span class="sc">|&gt;</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> variable,</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> coverage</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(country)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Optionally rename columns to more readable titles</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>coverage_table <span class="ot">&lt;-</span> coverage_table <span class="sc">|&gt;</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Country</span><span class="st">`</span> <span class="ot">=</span> country,</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Employment-to-Population Ratio</span><span class="st">`</span> <span class="ot">=</span> emp_to_pop,</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Fertility Rate</span><span class="st">`</span> <span class="ot">=</span> fertility_rate,</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Female Labor Force Participation</span><span class="st">`</span> <span class="ot">=</span> flfpr,</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">GDP per Capita (constant)</span><span class="st">`</span> <span class="ot">=</span> gdp_capita_const,</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Gini Index</span><span class="st">`</span> <span class="ot">=</span> gini_index,</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Net Migration</span><span class="st">`</span> <span class="ot">=</span> net_migration,</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Population</span><span class="st">`</span> <span class="ot">=</span> total_population</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>coverage_table <span class="sc">|&gt;</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Coverage Range by Country and Variable"</span>,</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Each cell shows the first and last available year"</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Employment-to-Population Ratio</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Emp-to-Pop"</span>,</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Fertility Rate</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Fertility"</span>,</span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Female Labor Force Participation</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"FLFPR"</span>,</span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">GDP per Capita (constant)</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"GDP (const)"</span>,</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Gini Index</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Gini"</span>,</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Net Migration</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Migration"</span>,</span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Total Population</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Population"</span></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_table_font</span>(<span class="at">font =</span> <span class="st">"Arial"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_all_caps</span>() <span class="sc">|&gt;</span></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_table_lines</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
-<div id="xtjgbkdomu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#xtjgbkdomu table {
+<div id="fycwdlrvws" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fycwdlrvws table {
   font-family: Arial, system-ui, 'Segoe UI', Roboto, Helvetica, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#xtjgbkdomu thead, #xtjgbkdomu tbody, #xtjgbkdomu tfoot, #xtjgbkdomu tr, #xtjgbkdomu td, #xtjgbkdomu th {
+#fycwdlrvws thead, #fycwdlrvws tbody, #fycwdlrvws tfoot, #fycwdlrvws tr, #fycwdlrvws td, #fycwdlrvws th {
   border-style: none;
 }
 
-#xtjgbkdomu p {
+#fycwdlrvws p {
   margin: 0;
   padding: 0;
 }
 
-#xtjgbkdomu .gt_table {
+#fycwdlrvws .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -472,12 +296,12 @@ How should we address missing values while preserving accuracy and comparability
   border-left-color: #D3D3D3;
 }
 
-#xtjgbkdomu .gt_caption {
+#fycwdlrvws .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#xtjgbkdomu .gt_title {
+#fycwdlrvws .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -489,7 +313,7 @@ How should we address missing values while preserving accuracy and comparability
   border-bottom-width: 0;
 }
 
-#xtjgbkdomu .gt_subtitle {
+#fycwdlrvws .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -501,7 +325,7 @@ How should we address missing values while preserving accuracy and comparability
   border-top-width: 0;
 }
 
-#xtjgbkdomu .gt_heading {
+#fycwdlrvws .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -513,13 +337,13 @@ How should we address missing values while preserving accuracy and comparability
   border-right-color: #D3D3D3;
 }
 
-#xtjgbkdomu .gt_bottom_border {
+#fycwdlrvws .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#xtjgbkdomu .gt_col_headings {
+#fycwdlrvws .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -534,7 +358,7 @@ How should we address missing values while preserving accuracy and comparability
   border-right-color: #D3D3D3;
 }
 
-#xtjgbkdomu .gt_col_heading {
+#fycwdlrvws .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -554,7 +378,7 @@ How should we address missing values while preserving accuracy and comparability
   overflow-x: hidden;
 }
 
-#xtjgbkdomu .gt_column_spanner_outer {
+#fycwdlrvws .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -566,15 +390,15 @@ How should we address missing values while preserving accuracy and comparability
   padding-right: 4px;
 }
 
-#xtjgbkdomu .gt_column_spanner_outer:first-child {
+#fycwdlrvws .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#xtjgbkdomu .gt_column_spanner_outer:last-child {
+#fycwdlrvws .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#xtjgbkdomu .gt_column_spanner {
+#fycwdlrvws .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -586,11 +410,11 @@ How should we address missing values while preserving accuracy and comparability
   width: 100%;
 }
 
-#xtjgbkdomu .gt_spanner_row {
+#fycwdlrvws .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#xtjgbkdomu .gt_group_heading {
+#fycwdlrvws .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -616,7 +440,7 @@ How should we address missing values while preserving accuracy and comparability
   text-align: left;
 }
 
-#xtjgbkdomu .gt_empty_group_heading {
+#fycwdlrvws .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -631,15 +455,15 @@ How should we address missing values while preserving accuracy and comparability
   vertical-align: middle;
 }
 
-#xtjgbkdomu .gt_from_md > :first-child {
+#fycwdlrvws .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#xtjgbkdomu .gt_from_md > :last-child {
+#fycwdlrvws .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#xtjgbkdomu .gt_row {
+#fycwdlrvws .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -658,7 +482,7 @@ How should we address missing values while preserving accuracy and comparability
   overflow-x: hidden;
 }
 
-#xtjgbkdomu .gt_stub {
+#fycwdlrvws .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -671,7 +495,7 @@ How should we address missing values while preserving accuracy and comparability
   padding-right: 5px;
 }
 
-#xtjgbkdomu .gt_stub_row_group {
+#fycwdlrvws .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -685,15 +509,15 @@ How should we address missing values while preserving accuracy and comparability
   vertical-align: top;
 }
 
-#xtjgbkdomu .gt_row_group_first td {
+#fycwdlrvws .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#xtjgbkdomu .gt_row_group_first th {
+#fycwdlrvws .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#xtjgbkdomu .gt_summary_row {
+#fycwdlrvws .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -703,16 +527,16 @@ How should we address missing values while preserving accuracy and comparability
   padding-right: 5px;
 }
 
-#xtjgbkdomu .gt_first_summary_row {
+#fycwdlrvws .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#xtjgbkdomu .gt_first_summary_row.thick {
+#fycwdlrvws .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#xtjgbkdomu .gt_last_summary_row {
+#fycwdlrvws .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -722,7 +546,7 @@ How should we address missing values while preserving accuracy and comparability
   border-bottom-color: #D3D3D3;
 }
 
-#xtjgbkdomu .gt_grand_summary_row {
+#fycwdlrvws .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -732,7 +556,7 @@ How should we address missing values while preserving accuracy and comparability
   padding-right: 5px;
 }
 
-#xtjgbkdomu .gt_first_grand_summary_row {
+#fycwdlrvws .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -742,7 +566,7 @@ How should we address missing values while preserving accuracy and comparability
   border-top-color: #D3D3D3;
 }
 
-#xtjgbkdomu .gt_last_grand_summary_row_top {
+#fycwdlrvws .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -752,11 +576,11 @@ How should we address missing values while preserving accuracy and comparability
   border-bottom-color: #D3D3D3;
 }
 
-#xtjgbkdomu .gt_striped {
+#fycwdlrvws .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#xtjgbkdomu .gt_table_body {
+#fycwdlrvws .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -765,7 +589,7 @@ How should we address missing values while preserving accuracy and comparability
   border-bottom-color: #D3D3D3;
 }
 
-#xtjgbkdomu .gt_footnotes {
+#fycwdlrvws .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: solid;
@@ -779,7 +603,7 @@ How should we address missing values while preserving accuracy and comparability
   border-right-color: #D3D3D3;
 }
 
-#xtjgbkdomu .gt_footnote {
+#fycwdlrvws .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -788,7 +612,7 @@ How should we address missing values while preserving accuracy and comparability
   padding-right: 5px;
 }
 
-#xtjgbkdomu .gt_sourcenotes {
+#fycwdlrvws .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: solid;
@@ -802,7 +626,7 @@ How should we address missing values while preserving accuracy and comparability
   border-right-color: #D3D3D3;
 }
 
-#xtjgbkdomu .gt_sourcenote {
+#fycwdlrvws .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -810,78 +634,77 @@ How should we address missing values while preserving accuracy and comparability
   padding-right: 5px;
 }
 
-#xtjgbkdomu .gt_left {
+#fycwdlrvws .gt_left {
   text-align: left;
 }
 
-#xtjgbkdomu .gt_center {
+#fycwdlrvws .gt_center {
   text-align: center;
 }
 
-#xtjgbkdomu .gt_right {
+#fycwdlrvws .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#xtjgbkdomu .gt_font_normal {
+#fycwdlrvws .gt_font_normal {
   font-weight: normal;
 }
 
-#xtjgbkdomu .gt_font_bold {
+#fycwdlrvws .gt_font_bold {
   font-weight: bold;
 }
 
-#xtjgbkdomu .gt_font_italic {
+#fycwdlrvws .gt_font_italic {
   font-style: italic;
 }
 
-#xtjgbkdomu .gt_super {
+#fycwdlrvws .gt_super {
   font-size: 65%;
 }
 
-#xtjgbkdomu .gt_footnote_marks {
+#fycwdlrvws .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#xtjgbkdomu .gt_asterisk {
+#fycwdlrvws .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#xtjgbkdomu .gt_indent_1 {
+#fycwdlrvws .gt_indent_1 {
   text-indent: 5px;
 }
 
-#xtjgbkdomu .gt_indent_2 {
+#fycwdlrvws .gt_indent_2 {
   text-indent: 10px;
 }
 
-#xtjgbkdomu .gt_indent_3 {
+#fycwdlrvws .gt_indent_3 {
   text-indent: 15px;
 }
 
-#xtjgbkdomu .gt_indent_4 {
+#fycwdlrvws .gt_indent_4 {
   text-indent: 20px;
 }
 
-#xtjgbkdomu .gt_indent_5 {
+#fycwdlrvws .gt_indent_5 {
   text-indent: 25px;
 }
 
-#xtjgbkdomu .katex-display {
+#fycwdlrvws .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#xtjgbkdomu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#fycwdlrvws div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
 
 <table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-<caption>Coverage range by country and variable</caption>
 <thead>
 <tr class="gt_heading header">
 <th colspan="8" class="gt_heading gt_title gt_font_normal">Coverage Range by Country and Variable</th>
@@ -1040,271 +863,44 @@ How should we address missing values while preserving accuracy and comparability
 <p>As shown by the data coverage table, the data differ in years covered across variables and countries. While certain variables (Fertility Rate, Net Migration, Total Population) span over 60 years for each country, others (most notably, Gini Index), have significantly shorter spans - for example, Japan’s Gini Index is only known for the 2008-2020 range.</p>
 <p>While 1960 is the first year of recorded observations for Fertility Rate, GDP per Capita, Net Migration, and Total Population, OECD indeces (Employment-to-Population Ratio and Female Labor Force Participation) are available starting from 1991 and 1990, respectively.</p>
 <p>Considering these date ranges across countries and variables, we can explore the interactions between long-spanning variables as the primary part of this investigation, using Employment-to-Population ratio, Female Labor Force Participation Rate, and Gini Index as auxillary variables to contextualize and enrich the analysis where their data is available. With this hybrid approach, we can maximize both temporal coverage and analytical depth, enabling broad trend analysis while still leveraging the socio-economic context captured by shorter-range indicators.</p>
-<p>Considering that almost all variables cover data up to 2023, we decide to cap our exploration at 2023, and stick to the following date ranges for: - 1960-2023 for Fertiity Rate, Constant GDP Per Capita, Net Migration, and Total Population - 1991-2023 for Employment-to-Population Ratio, Female Labor Force Participation Rate, and Gini Index</p>
+<p>Considering that almost all variables cover data up to 2023, we decide to cap our exploration at 2023, and stick to the following date ranges for:</p>
+<ul>
+<li>1960–2023 for Fertiity Rate, Constant GDP Per Capita, Net Migration, and Total Population</li>
+<li>1991–2023 for Employment-to-Population Ratio, Female Labor Force Participation Rate, and Gini Index</li>
+</ul>
 </section>
 <section id="missing-value-analysis" class="level2" data-number="2.6">
 <h2 data-number="2.6" class="anchored" data-anchor-id="missing-value-analysis"><span class="header-section-number">2.6</span> Missing value analysis</h2>
 <p>With the aforementioned date ranges in mind, we can proceed to analyzing missing values, for each variable, in its respective timespan.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="st">"./data-gathering/data/clean/master_long.csv"</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>master_long <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(file_path, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">year  =</span> <span class="fu">as.integer</span>(year),</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">value =</span> <span class="fu">suppressWarnings</span>(<span class="fu">as.numeric</span>(value))</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># variable-specific year windows</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   1960–2023: fertility_rate, gdp_capita_const, net_migration, total_population</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   1991–2023: emp_to_pop, flfpr, gini_index</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># ------------------------------------------------------------</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>end_year <span class="ot">&lt;-</span> <span class="dv">2023</span>L</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>var_start_years <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>variable,            <span class="sc">~</span>start_year,</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"fertility_rate"</span>,       <span class="dv">1960</span>L,</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gdp_capita_const"</span>,     <span class="dv">1960</span>L,</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"net_migration"</span>,        <span class="dv">1960</span>L,</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"total_population"</span>,     <span class="dv">1960</span>L,</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"emp_to_pop"</span>,           <span class="dv">1991</span>L,</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"flfpr"</span>,                <span class="dv">1990</span>L,</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gini_index"</span>,           <span class="dv">1991</span>L</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>range_filtered_data <span class="ot">&lt;-</span> master_long <span class="sc">|&gt;</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(var_start_years, <span class="at">by =</span> <span class="st">"variable"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">&gt;=</span> start_year, year <span class="sc">&lt;=</span> end_year) <span class="sc">|&gt;</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, year, variable, value) <span class="sc">|&gt;</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(country, variable, year)</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a> range_filtered_data <span class="sc">|&gt;</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>   <span class="fu">group_by</span>(variable) <span class="sc">|&gt;</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>   <span class="fu">summarise</span>(<span class="at">min_year =</span> <span class="fu">min</span>(year), <span class="at">max_year =</span> <span class="fu">max</span>(year), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 7 × 3
-  variable         min_year max_year
-  &lt;chr&gt;               &lt;int&gt;    &lt;int&gt;
-1 emp_to_pop           1991     2023
-2 fertility_rate       1960     2023
-3 flfpr                1990     2023
-4 gdp_capita_const     1960     2023
-5 gini_index           1991     2023
-6 net_migration        1960     2023
-7 total_population     1960     2023</code></pre>
-</div>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) Missingness per country–variable within the window</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>missing_summary <span class="ot">&lt;-</span> range_filtered_data <span class="sc">|&gt;</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(var_start_years, <span class="at">by =</span> <span class="st">"variable"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country, variable, start_year) <span class="sc">|&gt;</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># years with actual (finite, non-NA) values present</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">years_present =</span> dplyr<span class="sc">::</span><span class="fu">n_distinct</span>(year[<span class="fu">is.finite</span>(value) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(value)]),</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop_last"</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">end_year            =</span> end_year,</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_years_window  =</span> end_year <span class="sc">-</span> start_year <span class="sc">+</span> <span class="dv">1</span>L,</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">years_missing       =</span> total_years_window <span class="sc">-</span> years_present,</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_years_missing   =</span> years_missing <span class="sc">/</span> total_years_window,</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">date_range          =</span> <span class="fu">paste0</span>(start_year, <span class="st">"–"</span>, end_year)</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(country, variable)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Show full table</span></span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(missing_summary, <span class="at">n =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 91 × 9
-   country variable         start_year years_present end_year total_years_window
-   &lt;chr&gt;   &lt;chr&gt;                 &lt;int&gt;         &lt;int&gt;    &lt;int&gt;              &lt;int&gt;
- 1 AUS     emp_to_pop             1991            33     2023                 33
- 2 AUS     fertility_rate         1960            64     2023                 64
- 3 AUS     flfpr                  1990            34     2023                 34
- 4 AUS     gdp_capita_const       1960            64     2023                 64
- 5 AUS     gini_index             1991            10     2023                 33
- 6 AUS     net_migration          1960            64     2023                 64
- 7 AUS     total_population       1960            64     2023                 64
- 8 BRA     emp_to_pop             1991            33     2023                 33
- 9 BRA     fertility_rate         1960            64     2023                 64
-10 BRA     flfpr                  1990            34     2023                 34
-11 BRA     gdp_capita_const       1960            64     2023                 64
-12 BRA     gini_index             1991            29     2023                 33
-13 BRA     net_migration          1960            64     2023                 64
-14 BRA     total_population       1960            64     2023                 64
-15 CAN     emp_to_pop             1991            33     2023                 33
-16 CAN     fertility_rate         1960            64     2023                 64
-17 CAN     flfpr                  1990            34     2023                 34
-18 CAN     gdp_capita_const       1960            64     2023                 64
-19 CAN     gini_index             1991            31     2023                 33
-20 CAN     net_migration          1960            64     2023                 64
-21 CAN     total_population       1960            64     2023                 64
-22 CHN     emp_to_pop             1991            33     2023                 33
-23 CHN     fertility_rate         1960            64     2023                 64
-24 CHN     flfpr                  1990            34     2023                 34
-25 CHN     gdp_capita_const       1960            64     2023                 64
-26 CHN     gini_index             1991            19     2023                 33
-27 CHN     net_migration          1960            64     2023                 64
-28 CHN     total_population       1960            64     2023                 64
-29 DEU     emp_to_pop             1991            33     2023                 33
-30 DEU     fertility_rate         1960            64     2023                 64
-31 DEU     flfpr                  1990            34     2023                 34
-32 DEU     gdp_capita_const       1960            64     2023                 64
-33 DEU     gini_index             1991            30     2023                 33
-34 DEU     net_migration          1960            64     2023                 64
-35 DEU     total_population       1960            64     2023                 64
-36 IND     emp_to_pop             1991            33     2023                 33
-37 IND     fertility_rate         1960            64     2023                 64
-38 IND     flfpr                  1990            34     2023                 34
-39 IND     gdp_capita_const       1960            64     2023                 64
-40 IND     gini_index             1991             5     2023                 33
-41 IND     net_migration          1960            64     2023                 64
-42 IND     total_population       1960            64     2023                 64
-43 JPN     emp_to_pop             1991            33     2023                 33
-44 JPN     fertility_rate         1960            64     2023                 64
-45 JPN     flfpr                  1990            34     2023                 34
-46 JPN     gdp_capita_const       1960            64     2023                 64
-47 JPN     gini_index             1991            13     2023                 33
-48 JPN     net_migration          1960            64     2023                 64
-49 JPN     total_population       1960            64     2023                 64
-50 KOR     emp_to_pop             1991            33     2023                 33
-51 KOR     fertility_rate         1960            64     2023                 64
-52 KOR     flfpr                  1990            34     2023                 34
-53 KOR     gdp_capita_const       1960            64     2023                 64
-54 KOR     gini_index             1991            11     2023                 33
-55 KOR     net_migration          1960            64     2023                 64
-56 KOR     total_population       1960            64     2023                 64
-57 NGA     emp_to_pop             1991            33     2023                 33
-58 NGA     fertility_rate         1960            64     2023                 64
-59 NGA     flfpr                  1990            34     2023                 34
-60 NGA     gdp_capita_const       1960            64     2023                 64
-61 NGA     gini_index             1991             8     2023                 33
-62 NGA     net_migration          1960            64     2023                 64
-63 NGA     total_population       1960            64     2023                 64
-64 POL     emp_to_pop             1991            33     2023                 33
-65 POL     fertility_rate         1960            64     2023                 64
-66 POL     flfpr                  1990            34     2023                 34
-67 POL     gdp_capita_const       1960            34     2023                 64
-68 POL     gini_index             1991            30     2023                 33
-69 POL     net_migration          1960            64     2023                 64
-70 POL     total_population       1960            64     2023                 64
-71 SWE     emp_to_pop             1991            33     2023                 33
-72 SWE     fertility_rate         1960            64     2023                 64
-73 SWE     flfpr                  1990            34     2023                 34
-74 SWE     gdp_capita_const       1960            64     2023                 64
-75 SWE     gini_index             1991            26     2023                 33
-76 SWE     net_migration          1960            64     2023                 64
-77 SWE     total_population       1960            64     2023                 64
-78 USA     emp_to_pop             1991            33     2023                 33
-79 USA     fertility_rate         1960            64     2023                 64
-80 USA     flfpr                  1990            34     2023                 34
-81 USA     gdp_capita_const       1960            64     2023                 64
-82 USA     gini_index             1991            33     2023                 33
-83 USA     net_migration          1960            64     2023                 64
-84 USA     total_population       1960            64     2023                 64
-85 ZAF     emp_to_pop             1991            33     2023                 33
-86 ZAF     fertility_rate         1960            64     2023                 64
-87 ZAF     flfpr                  1990            34     2023                 34
-88 ZAF     gdp_capita_const       1960            64     2023                 64
-89 ZAF     gini_index             1991             6     2023                 33
-90 ZAF     net_migration          1960            64     2023                 64
-91 ZAF     total_population       1960            64     2023                 64
-# ℹ 3 more variables: years_missing &lt;int&gt;, pct_years_missing &lt;dbl&gt;,
-#   date_range &lt;chr&gt;</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) Aggregated view by variable (how widespread the gaps are)</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>missing_by_variable <span class="ot">&lt;-</span> missing_summary <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(variable) <span class="sc">|&gt;</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">countries_with_missing =</span> <span class="fu">sum</span>(pct_years_missing <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_pct_missing       =</span> <span class="fu">mean</span>(pct_years_missing, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_pct_missing        =</span> <span class="fu">max</span>(pct_years_missing, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_pct_missing))</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>missing_by_variable</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 7 × 4
-  variable         countries_with_missing mean_pct_missing max_pct_missing
-  &lt;chr&gt;                             &lt;int&gt;            &lt;dbl&gt;           &lt;dbl&gt;
-1 gini_index                           12           0.415            0.848
-2 gdp_capita_const                      1           0.0361           0.469
-3 emp_to_pop                            0           0                0    
-4 fertility_rate                        0           0                0    
-5 flfpr                                 0           0                0    
-6 net_migration                         0           0                0    
-7 total_population                      0           0                0    </code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3) Heatmap (ensures zero-missing tiles appear)</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plot_df <span class="ot">&lt;-</span> missing_summary <span class="sc">|&gt;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country, variable, pct_years_missing) <span class="sc">|&gt;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">complete</span>(country, variable, <span class="at">fill =</span> <span class="fu">list</span>(<span class="at">pct_years_missing =</span> <span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">variable =</span> <span class="fu">fct_reorder</span>(variable, pct_years_missing, <span class="at">.fun =</span> mean, <span class="at">.desc =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">country  =</span> <span class="fu">fct_reorder</span>(country,  pct_years_missing, <span class="at">.fun =</span> mean, <span class="at">.desc =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- Heatmap with labels for cells where missing &gt; 0 ----</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_df, <span class="fu">aes</span>(<span class="at">x =</span> variable, <span class="at">y =</span> country, <span class="at">fill =</span> pct_years_missing)) <span class="sc">+</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"grey90"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> <span class="fu">subset</span>(plot_df, pct_years_missing <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(pct_years_missing <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>), <span class="st">"%"</span>)),</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">size =</span> <span class="dv">3</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> percent,</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"% Missing (within window)"</span>,</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">low =</span> <span class="st">"white"</span>, <span class="at">high =</span> <span class="st">"firebrick"</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Missing coverage by country and variable (date window-aware)"</span>,</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Variable"</span>,</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Country"</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">40</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="data_files/figure-html/missing-analysis-corrected-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="data_files/figure-html/missing-analysis-window-aware-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>We see that we are missing significant proportions of Gini Index values for most countries in the covered range. With &gt;40% missing, these are essentially incomputable and not viable for statistical analysis in combination with the other variables. Thus, we can treat the Gini Index as an extra variable that serves a contextual and interpretive role rather than a primary analytical one. It can be used to illustrate patterns or disparities in income inequality where data is available, but it should not be included in quantitative analyses or cross-variable comparisons due to its inconsistent coverage. One more problem that we can observe in the data missingness table is the fact that 46.9% of the data between 1960 and 2023 is missing for GDP per Capita in Poland. Poland’s GDP data was only reliably reported after 1989, when the communist regime fell in the country. Thus, historical GDP data prior to the early 1990s is often incomplete or unavailable due to differences in accounting standards, data collection methods, and limited integration with international databases such as the World Bank. Therefore, for Poland, we will retain this gap rather than imputing values to preserve data consistency across sources.</p>
+<p>We see that we are missing significant proportions of Gini Index values for most countries in the covered range. With &gt;40% missing, these are essentially incomputable and not viable for statistical analysis in combination with the other variables. Thus, we can treat the Gini Index as an extra variable that serves a contextual and interpretive role rather than a primary analytical one. It can be used to illustrate patterns or disparities in income inequality where data is available, but it should not be included in quantitative analyses or cross-variable comparisons due to its inconsistent coverage.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_files/figure-html/gini-missing-heatmap-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>One more problem that we can observe in the data missingness table is the fact that 46.9% of the data between 1960 and 2023 is missing for GDP per Capita in Poland. Poland’s GDP data was only reliably reported after 1989, when the communist regime fell in the country. Thus, historical GDP data prior to the early 1990s is often incomplete or unavailable due to differences in accounting standards, data collection methods, and limited integration with international databases such as the World Bank. Therefore, for Poland, we will retain this gap rather than imputing values to preserve data consistency across sources.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_files/figure-html/poland-gdp-missing-plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 </section>
