@@ -1,0 +1,92 @@
+country,variable,url
+United States,Total Population,https://fred.stlouisfed.org/series/POPTOTUSA647NWDB
+United States,Fertility Rate,https://fred.stlouisfed.org/series/SPDYNTFRTINUSA
+United States,Constant GDP Per Capita,https://fred.stlouisfed.org/series/NYGDPPCAPKDUSA
+United States,Employment-to-Population Ratio,https://fred.stlouisfed.org/series/SLEMPTOTLSPZSUSA
+United States,Female Labor Force Participation Rate,https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=US
+United States,Gini Index,https://fred.stlouisfed.org/series/SIPOVGINIUSA
+United States,Net Migration,https://data.worldbank.org/indicator/SM.POP.NETM?locations=US
+Canada,Total Population,https://fred.stlouisfed.org/series/POPTOTCAA647NWDB
+Canada,Fertility Rate,https://fred.stlouisfed.org/series/SPDYNTFRTINCAN
+Canada,Constant GDP Per Capita,https://fred.stlouisfed.org/series/NYGDPPCAPKDCAN
+Canada,Employment-to-Population Ratio,https://fred.stlouisfed.org/series/SLEMPTOTLSPZSCAN
+Canada,Female Labor Force Participation Rate,https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=CA
+Canada,Gini Index,https://fred.stlouisfed.org/series/SIPOVGINICAN
+Canada,Net Migration,https://data.worldbank.org/indicator/SM.POP.NETM?locations=CA
+Germany,Total Population,https://fred.stlouisfed.org/series/POPTOTDEA647NWDB
+Germany,Fertility Rate,https://fred.stlouisfed.org/series/SPDYNTFRTINDEU
+Germany,Constant GDP Per Capita,https://fred.stlouisfed.org/series/NYGDPPCAPKDDEU
+Germany,Employment-to-Population Ratio,https://fred.stlouisfed.org/series/SLEMPTOTLSPZSDEU
+Germany,Female Labor Force Participation Rate,https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=DE
+Germany,Gini Index,https://fred.stlouisfed.org/series/SIPOVGINIDEU
+Germany,Net Migration,https://data.worldbank.org/indicator/SM.POP.NETM?locations=DE
+Sweden,Total Population,https://fred.stlouisfed.org/series/POPTOTSEA647NWDB
+Sweden,Fertility Rate,https://fred.stlouisfed.org/series/SPDYNTFRTINSWE
+Sweden,Constant GDP Per Capita,https://fred.stlouisfed.org/series/NYGDPPCAPKDSWE
+Sweden,Employment-to-Population Ratio,https://fred.stlouisfed.org/series/SLEMPTOTLSPZSSWE
+Sweden,Female Labor Force Participation Rate,https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=SE
+Sweden,Gini Index,https://fred.stlouisfed.org/series/SIPOVGINISWE
+Sweden,Net Migration,https://data.worldbank.org/indicator/SM.POP.NETM?locations=SE
+Poland,Total Population,https://fred.stlouisfed.org/series/POPTOTPLA647NWDB
+Poland,Fertility Rate,https://fred.stlouisfed.org/series/SPDYNTFRTINPOL
+Poland,Constant GDP Per Capita,https://fred.stlouisfed.org/series/NYGDPPCAPKDPOL
+Poland,Employment-to-Population Ratio,https://fred.stlouisfed.org/series/SLEMPTOTLSPZSPOL
+Poland,Female Labor Force Participation Rate,https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=PL
+Poland,Gini Index,https://fred.stlouisfed.org/series/SIPOVGINIPOL
+Poland,Net Migration,https://data.worldbank.org/indicator/SM.POP.NETM?locations=PL
+India,Total Population,https://fred.stlouisfed.org/series/POPTOTINA647NWDB
+India,Fertility Rate,https://fred.stlouisfed.org/series/SPDYNTFRTININD
+India,Constant GDP Per Capita,https://fred.stlouisfed.org/series/NYGDPPCAPKDIND
+India,Employment-to-Population Ratio,https://fred.stlouisfed.org/series/SLEMPTOTLSPZSIND
+India,Female Labor Force Participation Rate,https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=IN
+India,Gini Index,https://data.worldbank.org/indicator/SI.POV.GINI?locations=IN
+India,Net Migration,https://data.worldbank.org/indicator/SM.POP.NETM?locations=IN
+China,Total Population,https://fred.stlouisfed.org/series/POPTOTCNA647NWDB
+China,Fertility Rate,https://fred.stlouisfed.org/series/SPDYNTFRTINCHN
+China,Constant GDP Per Capita,https://fred.stlouisfed.org/series/NYGDPPCAPKDCHN
+China,Employment-to-Population Ratio,https://fred.stlouisfed.org/series/SLEMPTOTLSPZSCHN
+China,Female Labor Force Participation Rate,https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=CN
+China,Gini Index,https://fred.stlouisfed.org/series/SIPOVGINICHN
+China,Net Migration,https://data.worldbank.org/indicator/SM.POP.NETM?locations=CN
+Japan,Total Population,https://fred.stlouisfed.org/series/POPTOTJPA647NWDB
+Japan,Fertility Rate,https://fred.stlouisfed.org/series/SPDYNTFRTINJPN
+Japan,Constant GDP Per Capita,https://fred.stlouisfed.org/series/NYGDPPCAPKDJPN
+Japan,Employment-to-Population Ratio,https://fred.stlouisfed.org/series/SLEMPTOTLSPZSJPN
+Japan,Female Labor Force Participation Rate,https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=JP
+Japan,Gini Index,https://fred.stlouisfed.org/series/SIPOVGINIJPN
+Japan,Net Migration,https://data.worldbank.org/indicator/SM.POP.NETM?locations=JP
+South Korea,Total Population,https://fred.stlouisfed.org/series/POPTOTKRA647NWDB
+South Korea,Fertility Rate,https://fred.stlouisfed.org/series/SPDYNTFRTINKOR
+South Korea,Constant GDP Per Capita,https://fred.stlouisfed.org/series/NYGDPPCAPKDKOR
+South Korea,Employment-to-Population Ratio,https://fred.stlouisfed.org/series/SLEMPTOTLSPZSKOR
+South Korea,Female Labor Force Participation Rate,https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=KR
+South Korea,Gini Index,https://data.worldbank.org/indicator/SI.POV.GINI?locations=KR
+South Korea,Net Migration,https://data.worldbank.org/indicator/SM.POP.NETM?locations=KR
+Nigeria,Total Population,https://fred.stlouisfed.org/series/POPTOTNGA647NWDB
+Nigeria,Fertility Rate,https://fred.stlouisfed.org/series/SPDYNTFRTINNGA
+Nigeria,Constant GDP Per Capita,https://fred.stlouisfed.org/series/NYGDPPCAPKDNGA
+Nigeria,Employment-to-Population Ratio,https://fred.stlouisfed.org/series/SLEMPTOTLSPZSNGA
+Nigeria,Female Labor Force Participation Rate,https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=NG
+Nigeria,Gini Index,https://fred.stlouisfed.org/series/SIPOVGININGA
+Nigeria,Net Migration,https://data.worldbank.org/indicator/SM.POP.NETM?locations=NG
+South Africa,Total Population,https://fred.stlouisfed.org/series/POPTOTZAA647NWDB
+South Africa,Fertility Rate,https://fred.stlouisfed.org/series/SPDYNTFRTINZAF
+South Africa,Constant GDP Per Capita,https://fred.stlouisfed.org/series/NYGDPPCAPKDZAF
+South Africa,Employment-to-Population Ratio,https://fred.stlouisfed.org/series/SLEMPTOTLSPZSZAF
+South Africa,Female Labor Force Participation Rate,https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=ZA
+South Africa,Gini Index,https://fred.stlouisfed.org/series/SIPOVGINIZAF
+South Africa,Net Migration,https://data.worldbank.org/indicator/SM.POP.NETM?locations=ZA
+Brazil,Total Population,https://fred.stlouisfed.org/series/POPTOTBRA647NWDB
+Brazil,Fertility Rate,https://fred.stlouisfed.org/series/SPDYNTFRTINBRA
+Brazil,Constant GDP Per Capita,https://fred.stlouisfed.org/series/NYGDPPCAPKDBRA
+Brazil,Employment-to-Population Ratio,https://fred.stlouisfed.org/series/SLEMPTOTLSPZSBRA
+Brazil,Female Labor Force Participation Rate,https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=BR
+Brazil,Gini Index,https://fred.stlouisfed.org/series/SIPOVGINIBRA
+Brazil,Net Migration,https://data.worldbank.org/indicator/SM.POP.NETM?locations=BR
+Australia,Total Population,https://fred.stlouisfed.org/series/POPTOTAUA647NWDB
+Australia,Fertility Rate,https://fred.stlouisfed.org/series/SPDYNTFRTINAUS
+Australia,Constant GDP Per Capita,https://fred.stlouisfed.org/series/NYGDPPCAPKDAUS
+Australia,Employment-to-Population Ratio,https://fred.stlouisfed.org/series/SLEMPTOTLSPZSAUS
+Australia,Female Labor Force Participation Rate,https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=AU
+Australia,Gini Index,https://fred.stlouisfed.org/series/SIPOVGINIAUS
+Australia,Net Migration,https://data.worldbank.org/indicator/SM.POP.NETM?locations=AU

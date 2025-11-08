@@ -10,25 +10,47 @@ This data set is specifically from the [World Bank](https://www.worldbank.org/ex
 This data set is comes from the [World Bank](https://www.worldbank.org/ext/en/home). It is a time series dataset of the GDP per capita for the US from 1960 to 2025.
 
 **Employment-to-Population Ratio** — [FRED Series](https://fred.stlouisfed.org/series/EMRATIO)  
-This data set is from the [U.S. Bureau of Labor Statistics](https://www.bls.gov). It is a time series dataset that shows the employment rate to population ratio as a percentage.
+This data set is from the [World Bank](https://www.worldbank.org/ext/en/home). It is a time series dataset that shows the employment rate to population ratio as a percentage.
 
-**Inactivity Rate Female: Ages 15–64** — [FRED Series](https://fred.stlouisfed.org/series/LRIN64FEUSM156S)  
-This data comes from the [Organization for Economic Co-operation and Development (OECD)](https://www.oecd.org/en.html), and it is a time series dataset that shows the inactivity rate (defined as the proportion of the population that is not working and not actively looking for a job) of females aged 15–64 as a percentage.
+**Female Labor Force Participation Rate (Ages 15+)** — [World Bank Indicator](https://data.worldbank.org/indicator/SL.TLF.CACT.FE.ZS?locations=US)  
+This dataset comes from the [World Bank](https://www.worldbank.org/ext/en/home), and it measures the percentage of women ages 15 and older who are part of the labor force—that is, women who are either employed or actively seeking employment. It provides insight into female engagement in the economy and helps assess how social, economic, and policy factors influence gender participation in the workforce. The data are reported annually and are available for most countries beginning in 1990.
 
 **Gini Index** — [FRED Series](https://fred.stlouisfed.org/series/SIPOVGINIUSA)  
 This data comes from the [World Bank](https://www.worldbank.org/ext/en/home). The Gini index measures income inequality by calculating the area between the Lorenz curve and the line of perfect equality, where 0 represents perfect equality and 100 represents perfect inequality.
+
+**Total Population** — [FRED Series](https://fred.stlouisfed.org/series/POPTOTUSA647NWDB)  
+This data, sourced from the [World Bank](https://www.worldbank.org/ext/en/home), shows the country's total population. It might be useful in investigating whether immigration policies compensate for below-replacement birthrates.
+
+**Net Migration** — [World Bank Indicator](https://data.worldbank.org/indicator/SM.POP.NETM?locations=US)
+This data set comes from the [World Bank](https://www.worldbank.org/ext/en/home) and measures the net migration rate, defined as the difference between the number of immigrants and the number of emigrants for a country over a course of a year. Positive values indicate that more people are entering the country than leaving, while negative values indicate net emigration. This variable is particularly relevant for our analysis, as migration inflows can offset demographic decline caused by falling fertility rates. We also plan to examine possible lag effects between changes in migration and subsequent shifts in population growth.
 
 ## Missing value analysis
 
 For the data collection, we will scrape data for selected countries and then assess **data completeness**, as the datasets vary in their time scope from country to country. Once we evaluate missing data, we aim to address the following questions:
 
-1. **Timeframe Selection:**  
-   What timeframe allows us to gain valuable insights without having to impute a significant portion of the data (since heavy imputation could introduce inaccuracies)?
-
-2. **Country Selection:**  
+1. **Country Selection:**  
    Which countries provide a holistic overview of birth rates and their correlations with our selected economic and social indicators?
+
+2. **Timeframe Selection:**  
+   What timeframe allows us to gain valuable insights without having to impute a significant portion of the data (since heavy imputation could introduce inaccuracies)?
 
 3. **Handling Missing Data:**  
    How should we address missing values while preserving accuracy and comparability to the highest extent possible?
 
 Our plan is to first compile the raw datasets via API (using Python) for each indicator and country, merge them into a master dataset, and then perform exploratory analysis on the combined and cleaned data.
+
+## Country Selection
+
+To gain a holistic global overview of the declining birthrate problem, we decided to focus on 13 countries, spanning all 7 continents, with varying GDP per capita levels. The investigated countries range from highly populated developing economies (e.g. India) to aging advanced economies (e.g. South Korea), and span different stages of demographic transition - from high fertility (Nigeria) to very low fertility (Japan).
+
+The final country selection is structured as follows:
+
+| **Region**        | **Country**        | **Rationale** |
+|--------------------|--------------------|----------------|
+| **North America**  | United States 🇺🇸<br>Canada 🇨🇦 | Advanced economies with stable but below-replacement fertility; strong immigration inflows sustain population growth. |
+| **Europe**         | Germany 🇩🇪<br>Sweden 🇸🇪<br>Poland 🇵🇱 | Contrasting European cases: Western vs. Central; differing immigration policies, labor structures, and fertility recovery trends. |
+| **Asia**           | India 🇮🇳<br>China 🇨🇳<br>Japan 🇯🇵<br>South Korea 🇰🇷 | Broad spectrum of development and demographic stages, from rapid growth to severe aging and fertility decline. |
+| **Africa**         | Nigeria 🇳🇬<br>South Africa 🇿🇦 | High-fertility versus mid-transition economies; provide insight into the early stages of demographic transition. |
+| **South America**  | Brazil 🇧🇷 | Emerging economy experiencing a steady decline in fertility while maintaining moderate population growth. |
+| **Oceania**        | Australia 🇦🇺 | Immigration-driven growth with below-replacement fertility; valuable case for lag analysis between migration and population stabilization. |
+

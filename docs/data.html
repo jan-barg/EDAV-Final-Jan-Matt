@@ -145,6 +145,7 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">2.1</span> Description</a></li>
   <li><a href="#missing-value-analysis" id="toc-missing-value-analysis" class="nav-link" data-scroll-target="#missing-value-analysis"><span class="header-section-number">2.2</span> Missing value analysis</a></li>
+  <li><a href="#country-selection" id="toc-country-selection" class="nav-link" data-scroll-target="#country-selection"><span class="header-section-number">2.3</span> Country Selection</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/jan-barg/EDAV-Final-Jan-Matt.git/edit/main/data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jan-barg/EDAV-Final-Jan-Matt.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -183,19 +184,72 @@ This data set is from the <a href="https://www.bls.gov">U.S. Bureau of Labor Sta
 This data comes from the <a href="https://www.oecd.org/en.html">Organization for Economic Co-operation and Development (OECD)</a>, and it is a time series dataset that shows the inactivity rate (defined as the proportion of the population that is not working and not actively looking for a job) of females aged 15–64 as a percentage.</p>
 <p><strong>Gini Index</strong> — <a href="https://fred.stlouisfed.org/series/SIPOVGINIUSA">FRED Series</a><br>
 This data comes from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>. The Gini index measures income inequality by calculating the area between the Lorenz curve and the line of perfect equality, where 0 represents perfect equality and 100 represents perfect inequality.</p>
+<p><strong>Total Population</strong> — <a href="https://fred.stlouisfed.org/series/POPTOTUSA647NWDB">FRED Series</a><br>
+This data, sourced from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>, shows the country’s total population. It might be useful in investigating whether immigration policies compensate for below-replacement birthrates.</p>
 </section>
 <section id="missing-value-analysis" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="missing-value-analysis"><span class="header-section-number">2.2</span> Missing value analysis</h2>
 <p>For the data collection, we will scrape data for selected countries and then assess <strong>data completeness</strong>, as the datasets vary in their time scope from country to country. Once we evaluate missing data, we aim to address the following questions:</p>
 <ol type="1">
-<li><p><strong>Timeframe Selection:</strong><br>
-What timeframe allows us to gain valuable insights without having to impute a significant portion of the data (since heavy imputation could introduce inaccuracies)?</p></li>
 <li><p><strong>Country Selection:</strong><br>
 Which countries provide a holistic overview of birth rates and their correlations with our selected economic and social indicators?</p></li>
+<li><p><strong>Timeframe Selection:</strong><br>
+What timeframe allows us to gain valuable insights without having to impute a significant portion of the data (since heavy imputation could introduce inaccuracies)?</p></li>
 <li><p><strong>Handling Missing Data:</strong><br>
 How should we address missing values while preserving accuracy and comparability to the highest extent possible?</p></li>
 </ol>
 <p>Our plan is to first compile the raw datasets via API (using Python) for each indicator and country, merge them into a master dataset, and then perform exploratory analysis on the combined and cleaned data.</p>
+</section>
+<section id="country-selection" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="country-selection"><span class="header-section-number">2.3</span> Country Selection</h2>
+<p>To gain a holistic global overview of the declining birthrate problem, we decided to focus on 13 countries, spanning all 7 continents, with varying GDP per capita levels. The investigated countries range from highly populated developing economies (e.g.&nbsp;India) to aging advanced economies (e.g.&nbsp;South Korea), and span different stages of demographic transition - from high fertility (Nigeria) to very low fertility (Japan).</p>
+<p>The final country selection is structured as follows:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 35%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Region</strong></th>
+<th><strong>Country</strong></th>
+<th><strong>Rationale</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>North America</strong></td>
+<td>United States 🇺🇸<br>Canada 🇨🇦</td>
+<td>Advanced economies with stable but below-replacement fertility; strong immigration inflows sustain population growth.</td>
+</tr>
+<tr class="even">
+<td><strong>Europe</strong></td>
+<td>Germany 🇩🇪<br>Sweden 🇸🇪<br>Poland 🇵🇱</td>
+<td>Contrasting European cases: Western vs.&nbsp;Central; differing immigration policies, labor structures, and fertility recovery trends.</td>
+</tr>
+<tr class="odd">
+<td><strong>Asia</strong></td>
+<td>India 🇮🇳<br>China 🇨🇳<br>Japan 🇯🇵<br>South Korea 🇰🇷</td>
+<td>Broad spectrum of development and demographic stages, from rapid growth to severe aging and fertility decline.</td>
+</tr>
+<tr class="even">
+<td><strong>Africa</strong></td>
+<td>Nigeria 🇳🇬<br>South Africa 🇿🇦</td>
+<td>High-fertility versus mid-transition economies; provide insight into the early stages of demographic transition.</td>
+</tr>
+<tr class="odd">
+<td><strong>South America</strong></td>
+<td>Brazil 🇧🇷</td>
+<td>Emerging economy experiencing a steady decline in fertility while maintaining moderate population growth.</td>
+</tr>
+<tr class="even">
+<td><strong>Oceania</strong></td>
+<td>Australia 🇦🇺</td>
+<td>Immigration-driven growth with below-replacement fertility; valuable case for lag analysis between migration and population stabilization.</td>
+</tr>
+</tbody>
+</table>
 
 
 </section>
