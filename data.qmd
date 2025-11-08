@@ -56,7 +56,7 @@ The final country selection is structured as follows:
 
 ## Data Collection
 
-The data collection was done using API calls to the FRED and World Bank databases, using a python script, available [here](../data-gathering/datafetch.ipynb). The script created master-wide and master-long datasets, which will be used as the backbone of this project.
+The data collection was done using API calls to the FRED and World Bank databases, using a python script, available [here](https://github.com/jan-barg/EDAV-Final-Jan-Matt/blob/main/data-gathering/datafetch.ipynb). The script created master-wide and master-long datasets, which will be used as the backbone of this project.
 
 ## Date Range Selection
 
@@ -349,6 +349,137 @@ ggplot(plot_df, aes(x = variable, y = country, fill = pct_years_missing)) +
 ```
 We see that we are missing significant proportions of Gini Index values for most countries in the covered range. With >40% missing, these are essentially incomputable and not viable for statistical analysis in combination with the other variables.
 Thus, we can treat the Gini Index as an extra variable that serves a contextual and interpretive role rather than a primary analytical one. It can be used to illustrate patterns or disparities in income inequality where data is available, but it should not be included in quantitative analyses or cross-variable comparisons due to its inconsistent coverage. 
+```{r}
+#| label: gini-missing-heatmap
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(forcats)
+library(scales)
+
+# Use your window for Gini
+gini_start <- 1991L
+gini_end   <- 2023L
+
+# Countries that have Gini in your dataset
+gini_countries <- range_filtered_data %>%
+  filter(variable == "gini_index") %>%
+  distinct(country)
+
+# Build complete grid of (country, year) for the window
+gini_grid <- gini_countries %>%
+  crossing(year = gini_start:gini_end)
+
+# Join the actual observations
+gini_long <- gini_grid %>%
+  left_join(
+    range_filtered_data %>%
+      filter(variable == "gini_index") %>%
+      transmute(country, year, value = as.numeric(value)),
+    by = c("country", "year")
+  ) %>%
+  mutate(present = ifelse(is.finite(value) & !is.na(value), "Present", "Missing"))
+
+# Order countries by % missing (desc) to surface the worst offenders
+gini_order <- gini_long %>%
+  group_by(country) %>%
+  summarise(pct_missing = mean(present == "Missing"), .groups = "drop") %>%
+  arrange(desc(pct_missing))
+
+gini_long <- gini_long %>%
+  mutate(
+    country = factor(country, levels = gini_order$country)
+  )
+
+# Plot
+ggplot(gini_long, aes(x = year, y = country, fill = present)) +
+  geom_tile(color = "white", linewidth = 0.15) +
+  scale_x_continuous(breaks = seq(gini_start, gini_end, by = 4)) +
+  scale_fill_manual(values = c(Missing = "grey85", Present = "steelblue")) +
+  labs(
+    title = "Gini Index availability by country and year",
+    subtitle = "Window: 1991–2023 (blue = data present, gray = missing)",
+    x = "Year", y = "Country", fill = NULL
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    panel.grid = element_blank(),
+    axis.text.x = element_text(angle = 40, hjust = 1)
+  )
+
+```
+
+
+
 One more problem that we can observe in the data missingness table is the fact that 46.9% of the data between 1960 and 2023 is missing for GDP per Capita in Poland. Poland's GDP data was only reliably reported after 1989, when the communist regime fell in the country. Thus, historical GDP data prior to the early 1990s is often incomplete or unavailable due to differences in accounting standards, data collection methods, and limited integration with international databases such as the World Bank.
 Therefore, for Poland, we will retain this gap rather than imputing values to preserve data consistency across sources.
+
+```{r}
+#| label: poland-gdp-missing-plot
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(readr)
+library(ggplot2)
+library(scales)
+library(tidyr)
+library(glue)
+
+# --- Load if needed (comment out if master_long already in memory) ---
+# file_path <- "./data-gathering/data/clean/master_long.csv"
+# master_long <- read_csv(file_path, show_col_types = FALSE)
+
+# --- Build full-year frame (1960–2023) and join Poland GDP series ---
+pol_gdp <- master_long |>
+  filter(country == "POL", variable == "gdp_capita_const") |>
+  transmute(year = as.integer(year),
+            value = suppressWarnings(as.numeric(value)))
+
+full <- tibble(year = 1960:2023) |>
+  left_join(pol_gdp, by = "year") |>
+  arrange(year) |>
+  mutate(is_missing = is.na(value) | !is.finite(value))
+
+# --- Compute contiguous missing intervals for shading ---
+r <- rle(full$is_missing)
+ends   <- cumsum(r$lengths)
+starts <- ends - r$lengths + 1
+rects <- tibble(
+  start_idx = starts,
+  end_idx   = ends,
+  is_missing = r$values
+) |>
+  filter(is_missing) |>
+  transmute(
+    xmin = full$year[start_idx] - 0.5,
+    xmax = full$year[end_idx]   + 0.5
+  )
+
+pct_miss <- mean(full$is_missing)
+
+# --- Plot: shaded gaps + series where present ---
+ggplot(full, aes(x = year, y = value)) +
+  # Shade missing spans
+  geom_rect(data = rects,
+            aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf),
+            inherit.aes = FALSE, fill = "grey85") +
+  # Draw observed series
+  geom_line(na.rm = TRUE) +
+  geom_point(size = 1, na.rm = TRUE) +
+  labs(
+    title    = "Poland — GDP per Capita (constant) 1960–2023",
+    subtitle = glue("Missing years shaded ( {percent(pct_miss)} of window, 1960-1990 )"),
+    x = "Year",
+    y = "GDP per Capita (constant)"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(panel.grid.minor = element_blank())
+
+
+
+```
 
