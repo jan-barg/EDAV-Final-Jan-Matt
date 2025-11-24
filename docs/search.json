@@ -68,5 +68,25 @@
     "crumbs": [
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Data</span>"
     ]
+  },
+  {
+    "objectID": "results.html",
+    "href": "results.html",
+    "title": "3  Results",
+    "section": "",
+    "text": "3.1 Global fertility trajectories\nFertility rate trajectories (births per woman) for 13 selected countries. The dashed line marks the replacement level of 2.1 births per woman.\n!ADD DESCRIPTION HERE!\nFertility rates across countries and years, with countries ordered by average fertility.\n!ADD DESCRIPTION!\nConstant GDP per capita (log scale) for 13 selected countries.\nConstant GDP per capita (linear scale) for 13 selected countries.\n! INTERPRET ALL GRAPHS, ADD TRIPLE HASHTAG TITLES!",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Results</span>"
+    ]
+  },
+  {
+    "objectID": "results.html#global-fertility-trajectories",
+    "href": "results.html#global-fertility-trajectories",
+    "title": "3  Results",
+    "section": "",
+    "text": "3.1.1 Fertility vs female labor force participation\n\n\n\n\n\nRelationship between fertility and female labor force participation, with time evolution shown by connected points.\n\n\n\n\nDO WE KEEP THIS?",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Results</span>"
+    ]
   }
 ]

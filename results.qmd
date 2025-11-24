@@ -14,6 +14,11 @@ library(scales)
 library(glue)
 library(gt)
 
+library(gganimate)
+library(gifski)
+library(transformr)
+
+
 # mapping
 library(sf)
 library(rnaturalearth)
@@ -30,3 +35,390 @@ data_dir  <- "./data-gathering/data/clean"
 end_year  <- 2023L
 ```
 
+```{r}
+#| label: load-master-long
+
+master_long <- readr::read_csv(
+  file.path(data_dir, "master_long.csv"),
+  col_types = readr::cols(
+    country  = readr::col_character(),
+    year     = readr::col_integer(),
+    variable = readr::col_character(),
+    value    = readr::col_double()
+  )
+)
+
+
+country_lookup <- tibble::tibble(
+  country      = c("USA", "CAN", "DEU", "SWE", "POL",
+                   "IND", "CHN", "JPN", "KOR",
+                   "NGA", "ZAF", "BRA", "AUS"),
+  country_name = c("United States", "Canada", "Germany", "Sweden", "Poland",
+                   "India", "China", "Japan", "South Korea",
+                   "Nigeria", "South Africa", "Brazil", "Australia"),
+  region       = c("North America", "North America",
+                   "Europe", "Europe", "Europe",
+                   "Asia", "Asia", "Asia", "Asia",
+                   "Africa", "Africa",
+                   "South America",
+                   "Oceania")
+) |>
+  mutate(
+    country_name = factor(
+      country_name,
+      levels = c(
+        "United States", "Canada",
+        "Germany", "Sweden", "Poland",
+        "India", "China", "Japan", "South Korea",
+        "Nigeria", "South Africa",
+        "Brazil",
+        "Australia"
+      )
+    )
+  )
+```
+## Global fertility trajectories
+
+```{r}
+#| label: fertility-faceted
+#| fig-cap: "Fertility rate trajectories (births per woman) for 13 selected countries. The dashed line marks the replacement level of 2.1 births per woman."
+
+fertility_long <- master_long |>
+  filter(
+    variable == "fertility_rate",
+    year >= 1960,
+    year <= end_year
+  ) |>
+  left_join(country_lookup, by = "country")
+
+ggplot(fertility_long, aes(x = year, y = value)) +
+  # replacement line
+  geom_hline(
+    yintercept = 2.1,
+    linetype   = "dashed",
+    color      = "grey40"
+  ) +
+  geom_line(color = "#2c7fb8", linewidth = 0.7) +
+  facet_wrap(~ country_name, ncol = 4) +
+  scale_y_continuous(
+    "Fertility rate (births per woman)",
+    limits = c(0, NA)
+  ) +
+  scale_x_continuous(
+    "Year",
+    breaks = seq(1960, 2020, by = 20)
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(face = "bold", size = 16),
+    panel.grid.minor = element_blank()
+  ) +
+  labs(
+    title = "Fertility has declined across all selected countries",
+    subtitle = "Dashed line shows the replacement level of 2.1 births per woman"
+  )
+```
+!ADD DESCRIPTION HERE!
+
+
+
+```{r}
+#| label: fertility-heatmap
+#| fig-cap: "Fertility rates across countries and years, with countries ordered by average fertility."
+
+fertility_data <- master_long |>
+  filter(
+    variable == "fertility_rate",
+    year >= 1960,
+    year <= end_year
+  ) |>
+  left_join(country_lookup, by = "country")
+
+# compute average fertility over the entire period
+country_order <- fertility_data |>
+  group_by(country_name) |>
+  summarize(avg_fertility = mean(value, na.rm = TRUE)) |>
+  arrange(desc(avg_fertility)) |>
+  pull(country_name)
+
+fertility_data <- fertility_data |>
+  mutate(
+    country_name = factor(country_name, levels = rev(country_order))
+  )
+
+ggplot(fertility_data, aes(x = year, y = country_name, fill = value)) +
+  geom_tile() +
+  scale_x_continuous(
+    "Year",
+    breaks = seq(1960, 2020, by = 10),
+    expand = expansion(mult = c(0, 0))
+  ) +
+  scale_fill_viridis_c(
+    name = "Births per\nwoman",
+    option = "magma",
+    direction = -1
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.y  = element_text(face = "bold"),
+    plot.title   = element_text(size = 16, face = "bold")
+  ) +
+  labs(
+    title = "Fertility is converging across countries over time"
+  )
+
+
+```
+!ADD DESCRIPTION!
+
+
+```{r}
+#| label: gdp-faceted
+#| fig-cap: "Constant GDP per capita (log scale) for 13 selected countries."
+
+gdp_long <- master_long |>
+  filter(
+    variable == "gdp_capita_const",
+    year >= 1960,
+    year <= end_year
+  ) |>
+  left_join(country_lookup, by = "country")
+
+ggplot(gdp_long, aes(x = year, y = value)) +
+  geom_line(color = "#1b9e77", linewidth = 0.7) +
+  facet_wrap(~ country_name, ncol = 4) +
+  scale_y_log10(
+    "Constant GDP per capita (log scale)",
+    labels = scales::label_number(accuracy = 1, big.mark = ",")
+  ) +
+  scale_x_continuous(
+    "Year",
+    breaks = seq(1960, 2020, by = 20)
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text   = element_text(face = "bold"),
+    plot.title   = element_text(face = "bold", size = 16),
+    panel.grid.minor = element_blank()
+  ) +
+  labs(
+    title = "GDP per capita has risen across all selected countries",
+    subtitle = "Y-axis is on a logarithmic scale to make relative growth comparable."
+  )
+```
+
+
+
+
+
+```{r}
+#| label: gdp-faceted-linear
+#| fig-cap: "Constant GDP per capita (linear scale) for 13 selected countries."
+
+gdp_long <- master_long |>
+  filter(
+    variable == "gdp_capita_const",
+    year >= 1960,
+    year <= end_year
+  ) |>
+  left_join(country_lookup, by = "country")
+
+ggplot(gdp_long, aes(x = year, y = value)) +
+  geom_line(color = "#1b9e77", linewidth = 0.7) +
+  facet_wrap(~ country_name, ncol = 4, scales = "free_y") +
+  scale_y_continuous(
+    "Constant GDP per capita (USD)",
+    labels = scales::label_number(accuracy = 1, big.mark = ",")
+  ) +
+  scale_x_continuous(
+    "Year",
+    breaks = seq(1960, 2020, by = 20)
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text       = element_text(face = "bold"),
+    plot.title       = element_text(face = "bold", size = 16),
+    panel.grid.minor = element_blank()
+  ) +
+  labs(
+    title = "GDP per capita over time",
+  )
+```
+
+
+```{r}
+
+#| label: fert-gdp-facets
+#| fig-cap: "Relationship between fertility and GDP per capita, one panel per country."
+
+fert_gdp <- master_long |>
+  filter(
+    variable %in% c("fertility_rate", "gdp_capita_const"),
+    year >= 1960,
+    year <= end_year
+  ) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(names_from = variable, values_from = value) |>
+  left_join(country_lookup, by = "country") |>
+  filter(!is.na(fertility_rate), !is.na(gdp_capita_const))
+
+ggplot(fert_gdp, aes(x = gdp_capita_const, y = fertility_rate)) +
+  geom_point(alpha = 0.4, color = "#2c7fb8", size = 1) +
+  geom_smooth(method = "loess", se = FALSE, linewidth = 0.7, color = "#d95f02") +
+  facet_wrap(~ country_name, scales = "free") +
+  scale_x_log10(
+    "Constant GDP per capita (log scale)",
+    labels = scales::label_number(scale_cut = scales::cut_si(""))
+  ) +
+  scale_y_continuous("Fertility rate (births per woman)") +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text = element_text(face = "bold"),
+    plot.title = element_text(size = 16, face = "bold")
+  ) +
+  labs(
+    title = "Fertility declines as GDP per capita rises",
+    subtitle = "Each panel shows a country's trajectory across 1960–2023"
+  )
+
+```
+
+
+
+```{r}
+#| label: gapminder-data
+#| message: false
+#| warning: false
+
+gapminder_data <- master_long |>
+  filter(
+    variable %in% c("fertility_rate", "gdp_capita_const", "total_population"),
+    year >= 1960,
+    year <= end_year
+  ) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(
+    names_from = variable,
+    values_from = value
+  ) |>
+  left_join(country_lookup, by = "country") |>
+  # keep rows with both fertility & GDP present
+  filter(!is.na(fertility_rate), !is.na(gdp_capita_const))
+```
+
+
+
+```{r}
+# #| label: gapminder-fertility-gdp
+# #| eval: true
+# #| message: false
+# #| warning: false
+# 
+# # base plot
+# p_gapminder <- ggplot(
+#   gapminder_data,
+#   aes(
+#     x     = gdp_capita_const,
+#     y     = fertility_rate,
+#     size  = total_population / 1e6,   # millions
+#     color = region
+#   )
+# ) +
+#   geom_point(alpha = 0.8) +
+#   scale_x_log10(
+#     "Constant GDP per capita (log scale)",
+#     labels = scales::label_number(scale_cut = scales::cut_si(""))
+#   ) +
+#   scale_y_continuous(
+#     "Fertility rate (births per woman)",
+#     limits = c(0, NA)
+#   ) +
+#   scale_size_continuous(
+#     name = "Population (millions)",
+#     range = c(2, 10),
+#     guide = "legend"
+#   ) +
+#   theme_minimal(base_size = 12) +
+#   theme(
+#     legend.position = "right",
+#     plot.title      = element_text(size = 16, face = "bold"),
+#     plot.subtitle   = element_text(size = 11)
+#   ) +
+#   labs(
+#     title    = "Fertility vs GDP per Capita Over Time",
+#     subtitle = "Year: {frame_time}",
+#     color    = "Region"
+#   ) +
+#   transition_time(year) +
+#   ease_aes("linear")
+# 
+# # animate and save as GIF
+# anim <- animate(
+#   p_gapminder,
+#   renderer = gifski_renderer(),
+#   width    = 800,
+#   height   = 600,
+#   res      = 120,
+#   fps      = 10,
+#   duration = 12    # seconds
+# )
+# 
+# if (!dir.exists("figs")) dir.create("figs")
+# anim_save("figs/gapminder_fertility_gdp.gif", animation = anim)
+```
+
+![](figs/gapminder_fertility_gdp.gif){fig-cap="Gapminder-style animation of fertility vs GDP per capita for the 13 selected countries, 1960–2023."}
+
+
+! INTERPRET ALL GRAPHS, ADD TRIPLE HASHTAG TITLES!
+
+### Fertility vs female labor force participation
+
+
+```{r}
+#| label: fert-flfpr-facets
+#| fig-cap: "Relationship between fertility and female labor force participation, with time evolution shown by connected points."
+
+fert_flfpr <- master_long |>
+  filter(
+    variable %in% c("fertility_rate", "flfpr"),
+    year >= 1990,              # FLFPR starts around 1990
+    year <= end_year
+  ) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(names_from = variable, values_from = value) |>
+  left_join(country_lookup, by = "country") |>
+  filter(!is.na(fertility_rate), !is.na(flfpr))
+
+ggplot(
+  fert_flfpr,
+  aes(
+    x      = flfpr,
+    y      = fertility_rate,
+    group  = country_name
+  )
+) +
+  geom_path(aes(color = year), linewidth = 0.7, alpha = 0.8) +
+  geom_point(aes(color = year), size = 1.2, alpha = 0.8) +
+  scale_color_viridis_c(
+    name = "Year",
+    option = "plasma"
+  ) +
+  facet_wrap(~ country_name, scales = "free") +
+  scale_x_continuous("Female labor force participation rate (%)") +
+  scale_y_continuous("Fertility rate (births per woman)") +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text   = element_text(face = "bold"),
+    plot.title   = element_text(size = 16, face = "bold"),
+    panel.grid.minor = element_blank()
+  ) +
+  labs(
+    title    = "As female labor force participation rises, fertility often falls",
+    subtitle = "Each panel shows a country's trajectory since 1990, with color indicating year"
+  )
+```
+DO WE KEEP THIS?
