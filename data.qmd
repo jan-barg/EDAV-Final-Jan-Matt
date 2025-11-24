@@ -120,6 +120,51 @@ The final country selection is structured as follows:
 | **South America** | Brazil 🇧🇷                                                | Emerging economy experiencing a steady decline in fertility while maintaining moderate population growth.                                  |
 | **Oceania**       | Australia 🇦🇺                                             | Immigration-driven growth with below-replacement fertility; valuable case for lag analysis between migration and population stabilization. |
 
+```{r}
+selected_countries <- c(
+  "United States of America",
+  "Canada",
+  "Germany",
+  "Sweden",
+  "Poland",
+  "India",
+  "China",
+  "Japan",
+  "South Korea",
+  "Nigeria",
+  "South Africa",
+  "Brazil",
+  "Australia"
+)
+
+library(sf)
+library(rnaturalearth)
+library(ggplot2)
+library(dplyr)
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+world <- world %>%
+  mutate(
+    selected = ifelse(admin %in% selected_countries, "Selected", "Not Selected")
+  )
+
+ggplot(world) +
+  geom_sf(aes(fill = selected), color = "white", size = 0.2) +
+  scale_fill_manual(values = c("Selected" = "#2c7fb8", "Not Selected" = "gray85")) +
+  theme_minimal() +
+  labs(
+    title = "Countries Selected for Analysis",
+    fill = ""
+  ) +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(size = 18, face = "bold")
+  )
+
+```
+
+
 ## Data Collection
 
 The data collection was done using API calls to the FRED and World Bank databases, using a python script, available [here](https://github.com/jan-barg/EDAV-Final-Jan-Matt/blob/main/data-gathering/datafetch.ipynb). The script created master-wide and master-long datasets, which will be used as the backbone of this project.
