@@ -24,11 +24,6 @@ library(sf)
 library(rnaturalearth)
 library(rnaturalearthdata)
 
-knitr::opts_chunk$set(
-  echo = FALSE,
-  message = FALSE,
-  warning = FALSE
-)
 
 # you'll load master_long/master_wide later when needed
 data_dir  <- "./data-gathering/data/clean"

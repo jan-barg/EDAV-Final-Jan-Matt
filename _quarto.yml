@@ -4,6 +4,8 @@ project:
 
 execute:
   echo: true
+  message: false
+  warning: false
 
 book:
   title: "Economic Growth and the Shrinking Family: A Cross-Country Exploration"

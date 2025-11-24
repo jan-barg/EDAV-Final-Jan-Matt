@@ -13,11 +13,6 @@ library(scales)
 library(glue)
 library(gt)
 
-knitr::opts_chunk$set(
-  echo = FALSE,
-  message = FALSE,
-  warning = FALSE
-)
 
 file_path <- "./data-gathering/data/clean/master_long.csv"
 end_year  <- 2023L
