@@ -17,7 +17,7 @@ library(gt)
 library(gganimate)
 library(gifski)
 library(transformr)
-
+library(redav)
 
 # mapping
 library(sf)
@@ -42,6 +42,7 @@ master_long <- readr::read_csv(
     value    = readr::col_double()
   )
 )
+
 
 
 country_lookup <- tibble::tibble(
@@ -73,10 +74,24 @@ country_lookup <- tibble::tibble(
   )
 ```
 ## Global fertility trajectories
-
 ```{r}
 #| label: fertility-faceted
 #| fig-cap: "Fertility rate trajectories (births per woman) for 13 selected countries. The dashed line marks the replacement level of 2.1 births per woman."
+
+
+fertility_data <- master_long |>
+  filter(
+    variable == "fertility_rate",
+    year >= 1960,
+    year <= end_year
+  ) |>
+  left_join(country_lookup, by = "country")
+
+country_order <- fertility_data |>
+  group_by(country_name) |>
+  summarize(avg_fertility = mean(value, na.rm = TRUE)) |>
+  arrange(desc(avg_fertility)) |>
+  pull(country_name)
 
 fertility_long <- master_long |>
   filter(
@@ -84,7 +99,11 @@ fertility_long <- master_long |>
     year >= 1960,
     year <= end_year
   ) |>
-  left_join(country_lookup, by = "country")
+  left_join(country_lookup, by = "country") |>
+  # use the same ordering as in the heatmap
+  mutate(
+    country_name = factor(country_name, levels = (country_order))
+  )
 
 ggplot(fertility_long, aes(x = year, y = value)) +
   # replacement line
@@ -114,7 +133,9 @@ ggplot(fertility_long, aes(x = year, y = value)) +
     subtitle = "Dashed line shows the replacement level of 2.1 births per woman"
   )
 ```
+
 !ADD DESCRIPTION HERE!
+
 
 
 
@@ -122,20 +143,9 @@ ggplot(fertility_long, aes(x = year, y = value)) +
 #| label: fertility-heatmap
 #| fig-cap: "Fertility rates across countries and years, with countries ordered by average fertility."
 
-fertility_data <- master_long |>
-  filter(
-    variable == "fertility_rate",
-    year >= 1960,
-    year <= end_year
-  ) |>
-  left_join(country_lookup, by = "country")
+
 
 # compute average fertility over the entire period
-country_order <- fertility_data |>
-  group_by(country_name) |>
-  summarize(avg_fertility = mean(value, na.rm = TRUE)) |>
-  arrange(desc(avg_fertility)) |>
-  pull(country_name)
 
 fertility_data <- fertility_data |>
   mutate(
@@ -169,57 +179,34 @@ ggplot(fertility_data, aes(x = year, y = country_name, fill = value)) +
 ```
 !ADD DESCRIPTION!
 
-
-```{r}
-#| label: gdp-faceted
-#| fig-cap: "Constant GDP per capita (log scale) for 13 selected countries."
-
-gdp_long <- master_long |>
-  filter(
-    variable == "gdp_capita_const",
-    year >= 1960,
-    year <= end_year
-  ) |>
-  left_join(country_lookup, by = "country")
-
-ggplot(gdp_long, aes(x = year, y = value)) +
-  geom_line(color = "#1b9e77", linewidth = 0.7) +
-  facet_wrap(~ country_name, ncol = 4) +
-  scale_y_log10(
-    "Constant GDP per capita (log scale)",
-    labels = scales::label_number(accuracy = 1, big.mark = ",")
-  ) +
-  scale_x_continuous(
-    "Year",
-    breaks = seq(1960, 2020, by = 20)
-  ) +
-  theme_minimal(base_size = 12) +
-  theme(
-    strip.text   = element_text(face = "bold"),
-    plot.title   = element_text(face = "bold", size = 16),
-    panel.grid.minor = element_blank()
-  ) +
-  labs(
-    title = "GDP per capita has risen across all selected countries",
-    subtitle = "Y-axis is on a logarithmic scale to make relative growth comparable."
-  )
-```
-
-
-
-
+## Fertility vs. other indicators
 
 ```{r}
 #| label: gdp-faceted-linear
 #| fig-cap: "Constant GDP per capita (linear scale) for 13 selected countries."
 
+# compute median GDP per capita per country for ordering
+gdp_order <- master_long |>
+  filter(
+    variable == "gdp_capita_const",
+    year >= 1960,
+    year <= end_year
+  ) |>
+  left_join(country_lookup, by = "country") |>
+  group_by(country_name) |>
+  summarize(median_gdp = median(value, na.rm = TRUE)) |>
+  arrange(desc(median_gdp)) |>
+  pull(country_name)
+
+# apply ordering
 gdp_long <- master_long |>
   filter(
     variable == "gdp_capita_const",
     year >= 1960,
     year <= end_year
   ) |>
-  left_join(country_lookup, by = "country")
+  left_join(country_lookup, by = "country") |>
+  mutate(country_name = factor(country_name, levels = gdp_order))
 
 ggplot(gdp_long, aes(x = year, y = value)) +
   geom_line(color = "#1b9e77", linewidth = 0.7) +
@@ -239,10 +226,11 @@ ggplot(gdp_long, aes(x = year, y = value)) +
     panel.grid.minor = element_blank()
   ) +
   labs(
-    title = "GDP per capita over time",
+    title = "GDP per capita over time"
   )
-```
 
+```
+NOTE: We tried to group countries into three GDP tiers and give each tier its own y-scale using ggh4x. Although the method should work in theory, it produced layout glitches (empty panels, misaligned strips, overlapping axes) in our setup. After several failed fixes, we reverted to a simpler, reliable approach: a standard facet plot with countries ordered by median GDP.
 
 ```{r}
 
@@ -282,35 +270,34 @@ ggplot(fert_gdp, aes(x = gdp_capita_const, y = fertility_rate)) +
 ```
 
 
-
-```{r}
-#| label: gapminder-data
-#| message: false
-#| warning: false
-
-gapminder_data <- master_long |>
-  filter(
-    variable %in% c("fertility_rate", "gdp_capita_const", "total_population"),
-    year >= 1960,
-    year <= end_year
-  ) |>
-  select(country, year, variable, value) |>
-  tidyr::pivot_wider(
-    names_from = variable,
-    values_from = value
-  ) |>
-  left_join(country_lookup, by = "country") |>
-  # keep rows with both fertility & GDP present
-  filter(!is.na(fertility_rate), !is.na(gdp_capita_const))
-```
-
-
-
 ```{r}
 # #| label: gapminder-fertility-gdp
 # #| eval: true
 # #| message: false
 # #| warning: false
+# 
+# library(gganimate)
+# library(gifski)
+# library(dplyr)
+# 
+# gapminder_data <- master_long |>
+#   filter(
+#     variable %in% c("fertility_rate", "gdp_capita_const", "total_population"),
+#     year >= 1960,
+#     year <= end_year
+#   ) |>
+#   select(country, year, variable, value) |>
+#   tidyr::pivot_wider(
+#     names_from  = variable,
+#     values_from = value
+#   ) |>
+#   left_join(country_lookup, by = "country") |>
+#   # keep rows with both fertility & GDP present
+#   filter(!is.na(fertility_rate), !is.na(gdp_capita_const))
+# 
+# # pull out Nigeria rows (might be 0 if data is missing!)
+# nigeria_data <- gapminder_data |>
+#   filter(country == "Nigeria")
 # 
 # # base plot
 # p_gapminder <- ggplot(
@@ -319,10 +306,11 @@ gapminder_data <- master_long |>
 #     x     = gdp_capita_const,
 #     y     = fertility_rate,
 #     size  = total_population / 1e6,   # millions
-#     color = region
+#     color = region,
+#     group = country
 #   )
 # ) +
-#   geom_point(alpha = 0.8) +
+#   geom_point(alpha = 0.6) +
 #   scale_x_log10(
 #     "Constant GDP per capita (log scale)",
 #     labels = scales::label_number(scale_cut = scales::cut_si(""))
@@ -332,7 +320,7 @@ gapminder_data <- master_long |>
 #     limits = c(0, NA)
 #   ) +
 #   scale_size_continuous(
-#     name = "Population (millions)",
+#     name  = "Population (millions)",
 #     range = c(2, 10),
 #     guide = "legend"
 #   ) +
@@ -346,7 +334,43 @@ gapminder_data <- master_long |>
 #     title    = "Fertility vs GDP per Capita Over Time",
 #     subtitle = "Year: {frame_time}",
 #     color    = "Region"
-#   ) +
+#   )
+# 
+# # only add highlight + label if Nigeria actually has data
+# if (nrow(nigeria_data) > 0) {
+#   p_gapminder <- p_gapminder +
+#     geom_point(
+#       data  = nigeria_data,
+#       aes(
+#         x     = gdp_capita_const,
+#         y     = fertility_rate,
+#         size  = total_population / 1e6,
+#         group = country
+#       ),
+#       inherit.aes = FALSE,
+#       shape = 21,
+#       fill  = "gold",
+#       color = "black",
+#       stroke = 1.1,
+#       alpha  = 0.95,
+#       show.legend = FALSE
+#     ) +
+#     geom_text(
+#       data  = nigeria_data,
+#       aes(
+#         x     = gdp_capita_const,
+#         y     = fertility_rate,
+#         label = "Nigeria",
+#         group = country
+#       ),
+#       inherit.aes = FALSE,
+#       vjust = -1,
+#       fontface = "bold",
+#       show.legend = FALSE
+#     )
+# }
+# 
+# p_gapminder <- p_gapminder +
 #   transition_time(year) +
 #   ease_aes("linear")
 # 
@@ -358,14 +382,18 @@ gapminder_data <- master_long |>
 #   height   = 600,
 #   res      = 120,
 #   fps      = 10,
-#   duration = 12    # seconds
+#   duration = 12
 # )
 # 
 # if (!dir.exists("figs")) dir.create("figs")
 # anim_save("figs/gapminder_fertility_gdp.gif", animation = anim)
+
+
 ```
 
+
 ![](figs/gapminder_fertility_gdp.gif){fig-cap="Gapminder-style animation of fertility vs GDP per capita for the 13 selected countries, 1960–2023."}
+
 
 
 ! INTERPRET ALL GRAPHS, ADD TRIPLE HASHTAG TITLES!
@@ -412,8 +440,422 @@ ggplot(
     panel.grid.minor = element_blank()
   ) +
   labs(
-    title    = "As female labor force participation rises, fertility often falls",
+    title    = "Fertility and female labor force participation",
     subtitle = "Each panel shows a country's trajectory since 1990, with color indicating year"
   )
 ```
 DO WE KEEP THIS?
+
+### Fertility vs employment-to-population ratio
+```{r}
+#| label: fert-emp-facets
+#| fig-cap: "Fertility and employment-to-population ratio"
+
+fert_emp <- master_long |>
+  filter(
+    variable %in% c("fertility_rate", "emp_to_pop"),
+    year >= 1991,                # employment-to-pop starts around 1991
+    year <= end_year
+  ) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(
+    names_from  = variable,
+    values_from = value
+  ) |>
+  left_join(country_lookup, by = "country") |>
+  filter(
+    !is.na(fertility_rate),
+    !is.na(emp_to_pop)
+  )
+
+ggplot(
+  fert_emp,
+  aes(
+    x     = emp_to_pop,
+    y     = fertility_rate,
+    group = country_name
+  )
+) +
+  geom_path(aes(color = year), linewidth = 0.7, alpha = 0.8) +
+  geom_point(aes(color = year), size = 1.2, alpha = 0.8) +
+  scale_color_viridis_c(
+    name   = "Year",
+    option = "plasma"
+  ) +
+  facet_wrap(~ country_name, scales = "free") +
+  scale_x_continuous("Employment-to-population ratio (%)") +
+  scale_y_continuous("Fertility rate (births per woman)") +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text       = element_text(face = "bold"),
+    plot.title       = element_text(size = 16, face = "bold"),
+    panel.grid.minor = element_blank()
+  ) +
+  labs(
+    title    = "Fertility vs overall employment rates",
+    subtitle = "Each panel shows a country's trajectory since 1991, with color indicating year"
+  )
+
+```
+## Migration, population growth, and fertility
+
+```{r}
+#| label: migration-pop-growth
+#| fig-cap: "Standardized net migration and population growth over time for six selected countries."
+
+# focus countries (by country code)
+focus_countries <- c("USA", "CAN", "AUS", "POL", "JPN", "KOR")
+
+pop_mig <- master_long |>
+  filter(
+    country %in% focus_countries,
+    variable %in% c("total_population", "net_migration"),
+    year >= 1960,
+    year <= end_year
+  ) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(
+    names_from  = variable,
+    values_from = value
+  ) |>
+  arrange(country, year) |>
+  group_by(country) |>
+  # population growth % from lagged population
+  mutate(
+    pop_growth_pct = (total_population - dplyr::lag(total_population)) /
+      dplyr::lag(total_population) * 100
+  ) |>
+  ungroup() |>
+  left_join(country_lookup, by = "country") |>
+  filter(!is.na(pop_growth_pct), !is.na(net_migration))
+
+# standardize within each country so we can overlay on one y-axis
+pop_mig_scaled <- pop_mig |>
+  group_by(country_name) |>
+  mutate(
+    mig_scaled  = as.numeric(scale(net_migration)),
+    popg_scaled = as.numeric(scale(pop_growth_pct))
+  ) |>
+  ungroup() |>
+  tidyr::pivot_longer(
+    cols      = c(mig_scaled, popg_scaled),
+    names_to  = "series",
+    values_to = "value"
+  ) |>
+  mutate(
+    series = dplyr::recode(
+      series,
+      mig_scaled  = "Net migration (standardized)",
+      popg_scaled = "Population growth % (standardized)"
+    )
+  )
+
+ggplot(pop_mig_scaled, aes(x = year, y = value, color = series)) +
+  geom_hline(yintercept = 0, linetype = "dotted", color = "grey60") +
+  geom_line(linewidth = 0.8, alpha = 0.9) +
+  facet_wrap(~ country_name, ncol = 3) +
+  scale_x_continuous(
+    "Year",
+    breaks = seq(1960, 2020, by = 10)
+  ) +
+  scale_y_continuous("Standardized value") +
+  scale_color_manual(
+    name   = "",
+    values = c(
+      "Net migration (standardized)"          = "#1b9e77",
+      "Population growth % (standardized)"    = "#d95f02"
+    )
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text       = element_text(face = "bold"),
+    plot.title       = element_text(size = 16, face = "bold"),
+    panel.grid.minor = element_blank(),
+    legend.position  = "bottom"
+  ) +
+  labs(
+    title    = "Migration and population growth move together in immigration-heavy countries",
+    subtitle = "Each panel shows standardized net migration and population growth rates since 1960"
+  )
+```
+Note: Canada pop growth mimics migration patterns, Australia as well
+Poland spike - Ukraininnans
+
+
+```{r}
+#| label: migration-pop-lagged
+#| fig-cap: "Net migration today vs population growth in 1, 3, and 5 years, for six selected countries."
+
+focus_countries <- c("USA", "CAN", "AUS", "POL", "JPN", "KOR")
+
+pop_mig_lags <- master_long |>
+  filter(
+    country %in% focus_countries,
+    variable %in% c("total_population", "net_migration"),
+    year >= 1960,
+    year <= end_year
+  ) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(
+    names_from  = variable,
+    values_from = value
+  ) |>
+  arrange(country, year) |>
+  group_by(country) |>
+  mutate(
+    pop_growth_pct = (total_population - dplyr::lag(total_population)) /
+      dplyr::lag(total_population) * 100
+  ) |>
+  ungroup() |>
+  left_join(country_lookup, by = "country")
+
+# create future population growth for different lags
+pop_mig_lags_long <- pop_mig_lags |>
+  group_by(country) |>
+  mutate(
+    pop_growth_t1 = dplyr::lead(pop_growth_pct, 1),
+    pop_growth_t3 = dplyr::lead(pop_growth_pct, 3),
+    pop_growth_t5 = dplyr::lead(pop_growth_pct, 5)
+  ) |>
+  ungroup() |>
+  select(
+    country, country_name, year, net_migration,
+    pop_growth_t1, pop_growth_t3, pop_growth_t5
+  ) |>
+  tidyr::pivot_longer(
+    cols      = starts_with("pop_growth_t"),
+    names_to  = "lag_label",
+    values_to = "pop_growth_future"
+  ) |>
+  mutate(
+    lag_years = dplyr::recode(
+      lag_label,
+      "pop_growth_t1" = "t + 1 year",
+      "pop_growth_t3" = "t + 3 years",
+      "pop_growth_t5" = "t + 5 years"
+    ),
+    lag_years = factor(
+      lag_years,
+      levels = c("t + 1 year", "t + 3 years", "t + 5 years")
+    )
+  ) |>
+  filter(
+    !is.na(net_migration),
+    !is.na(pop_growth_future)
+  )
+
+ggplot(
+  pop_mig_lags_long,
+  aes(x = net_migration, y = pop_growth_future)
+) +
+  geom_point(alpha = 0.5, size = 1) +
+  geom_smooth(method = "lm", se = FALSE, linewidth = 0.7, color = "#d95f02") +
+  facet_grid(lag_years ~ country_name, scales = "free") +
+  scale_x_continuous(
+    "Net migration",
+    labels = scales::label_number(scale_cut = scales::cut_si(""))
+  ) +
+  scale_y_continuous("Population growth rate (%) in future year") +
+  theme_minimal(base_size = 12) +
+  theme(
+    strip.text       = element_text(face = "bold"),
+    plot.title       = element_text(size = 16, face = "bold"),
+    panel.grid.minor = element_blank()
+  ) +
+  labs(
+    title    = "Migration today and population growth tomorrow",
+    subtitle = "Each point is a country-year; rows show different horizons (1, 3, and 5 years ahead)"
+  )
+
+```
+
+This is pretty surprising: Australia and Canada actually experience high population growth from migratoin, but other coutries do not.
+
+When you interpret this plot, emphasize:
+✔ Immigration-heavy countries (Canada, Australia, USA)
+Population growth tracks migration more clearly
+Migration has meaningful demographic impact
+Lines are flat or slightly positive
+✔ Low-migration countries (Poland, Japan, Korea)
+Population growth is dominated by aging and very low fertility
+Migration is too small to offset this
+Negative slopes emerge because migration & growth move for different reasons
+✔ Conclusion
+Migration matters only where migration numbers are large relative to the population.
+In low-migration societies, migration is too small to affect total population change.
+
+These plots combine levels with growth rates — this induces spurious correlations
+This is the subtle but important statistical issue.
+Migration is:
+net_migration(t)
+Population growth is:
+(pop(t+1) – pop(t)) / pop(t)
+Population(t) has long, slow-moving inertia.
+Migration(t) is short-term and noisy.
+
+
+
+## Correlation and structural patterns
+```{r}
+#| label: corr-data-prep
+#| message: false
+#| warning: false
+
+corr_vars <- c(
+  "fertility_rate",
+  "gdp_capita_const",
+  "flfpr",
+  "emp_to_pop",
+  "net_migration"
+)
+
+corr_data <- master_long |>
+  filter(variable %in% corr_vars) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(
+    names_from = variable,
+    values_from = value
+  ) |>
+  left_join(country_lookup, by = "country")
+
+corr_60_90 <- corr_data |>
+  filter(year >= 1960, year <= 1990)
+
+corr_90_23 <- corr_data |>
+  filter(year > 1990, year <= 2023)
+
+num_vars <- corr_vars   # fertility_rate, gdp_capita_const, flfpr, emp_to_pop, net_migration
+
+cor_mat_60_90 <- corr_60_90 |>
+  select(all_of(num_vars)) |>
+  cor(use = "pairwise.complete.obs")
+
+cor_mat_90_23 <- corr_90_23 |>
+  select(all_of(num_vars)) |>
+  cor(use = "pairwise.complete.obs")
+
+
+plot_corr_heatmap <- function(cor_mat, title_text) {
+
+  cor_df <- as.data.frame(cor_mat)
+  cor_df$var1 <- rownames(cor_df)
+
+  long_cor <- tidyr::pivot_longer(
+    cor_df,
+    cols = -var1,
+    names_to = "var2",
+    values_to = "correlation"
+  )
+
+  ggplot(long_cor, aes(x = var1, y = var2, fill = correlation)) +
+    geom_tile(color = "white") +
+    scale_fill_distiller(
+      palette = "RdBu",
+      direction = 1,
+      limits = c(-1, 1),
+      name = "Correlation"
+    ) +
+    coord_fixed() +
+    theme_minimal(base_size = 12) +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      axis.text.y = element_text(face = "bold"),
+      plot.title  = element_text(face = "bold", size = 16)
+    ) +
+    labs(
+      title = title_text,
+      x = "",
+      y = ""
+    )
+}
+
+
+plot_corr_heatmap(cor_mat_60_90, "Correlation Structure (1960–1990)")
+
+
+```
+
+
+```{r}
+plot_corr_heatmap(cor_mat_90_23, "Correlation Structure (1990–2023)")
+
+```
+## PCA & Similartiy between Countries
+
+```{r}
+# variables to use
+vars_pca <- c(
+  "fertility_rate",
+  "gdp_capita_const",
+  "flfpr",
+  "emp_to_pop",
+  "net_migration"
+)
+
+# pivot wider and average across 1990–2023
+pca_data <- master_long |>
+  filter(
+    variable %in% vars_pca,
+    year >= 1990,
+    year <= end_year
+  ) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(names_from = variable, values_from = value) |>
+  left_join(country_lookup, by = "country") |>
+  group_by(country_name, region) |>
+  summarize(across(all_of(vars_pca), ~ mean(.x, na.rm = TRUE)), .groups = "drop")
+
+library(ggfortify)
+
+# PCA on scaled variables
+pca_model <- prcomp(
+  pca_data |> select(all_of(vars_pca)),
+  scale = TRUE,
+  center = TRUE
+)
+
+autoplot(
+  pca_model,
+  data = pca_data,
+  colour = "region",
+  label = TRUE,
+  label.size = 3,
+  loadings = TRUE,
+  loadings.label = TRUE,
+  loadings.colour = "black",
+  loadings.label.size = 3
+) +
+  scale_color_brewer(palette = "Set2") +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(size = 16, face = "bold")
+  ) +
+  labs(
+    title = "PCA Biplot of Demographic & Economic Indicators (Avg. 1990–2023)",
+    colour = "Region"
+  )
+
+
+```
+```{r}
+# hierarchical clustering on scaled variables
+dist_mat <- pca_data |>
+  select(all_of(vars_pca)) |>
+  scale() %>%
+  dist()
+
+hc <- hclust(dist_mat, method = "ward.D2")
+
+plot(
+  hc,
+  labels = pca_data$country_name,
+  main = "Hierarchical Clustering of Countries (Avg. 1990–2023)",
+  xlab = "",
+  sub = "",
+  cex = 0.9
+)
+
+```
+EXPLAIN HOW TO INTERPRET. EXPLAIN TAKEAWAYS
+
+
