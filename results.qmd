@@ -859,3 +859,528 @@ plot(
 EXPLAIN HOW TO INTERPRET. EXPLAIN TAKEAWAYS
 
 
+## Deep dive: South Korea
+
+```{r}
+#| fig-width: 10
+#| fig-height: 6
+#| fig-dpi: 300
+
+korea_fert <- master_long |>
+  filter(country == "KOR", variable == "fertility_rate") |>
+  left_join(country_lookup, by = "country")
+
+p_fert_kor <- ggplot(korea_fert, aes(x = year, y = value)) +
+  geom_hline(yintercept = 2.1, linetype = "dashed", color = "grey50") +
+  geom_line(color = "#2c7fb8", linewidth = 1) +
+  scale_y_continuous("Fertility rate", limits = c(0, NA)) +
+  scale_x_continuous("Year", breaks = seq(1960, 2020, by = 10)) +
+  theme_minimal(base_size = 12) +
+  labs(
+    title = "Fertility Rate"
+  )
+
+
+korea_gdp <- master_long |>
+  filter(country == "KOR", variable == "gdp_capita_const") |>
+  left_join(country_lookup, by = "country")
+
+p_gdp_kor <- ggplot(korea_gdp, aes(x = year, y = value)) +
+  geom_line(color = "#1b9e77", linewidth = 1) +
+  scale_y_log10(
+    "GDP per capita (log scale)",
+    labels = scales::label_number(scale_cut = scales::cut_si(""))
+  ) +
+  scale_x_continuous("Year", breaks = seq(1960, 2020, by = 10)) +
+  theme_minimal(base_size = 12) +
+  labs(
+    title = "Economic Growth"
+  )
+
+korea_labor <- master_long |>
+  filter(country == "KOR", variable %in% c("flfpr", "emp_to_pop")) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(names_from = variable, values_from = value) |>
+  filter(!is.na(flfpr), !is.na(emp_to_pop)) |>
+  mutate(
+    flfpr_z   = scale(flfpr)[, 1],
+    emp_z     = scale(emp_to_pop)[, 1]
+  ) |>
+  tidyr::pivot_longer(
+    cols = c(flfpr_z, emp_z),
+    names_to = "series",
+    values_to = "z_value"
+  ) |>
+  mutate(
+    series = dplyr::recode(
+      series,
+      flfpr_z = "Female labor force participation (z)",
+      emp_z   = "Employment-to-population (z)"
+    )
+  )
+
+p_labor_kor <- ggplot(korea_labor, aes(x = year, y = z_value, color = series)) +
+  geom_line(linewidth = 1) +
+  scale_color_manual(
+    values = c(
+      "Female labor force participation (z)" = "#d95f02",
+      "Employment-to-population (z)"         = "#7570b3"
+    ),
+    name = ""
+  ) +
+  scale_x_continuous("Year", breaks = seq(1990, 2020, by = 10)) +
+  theme_minimal(base_size = 12) +
+  labs(
+    title = "Labor Market Trends",
+    y = "Standardized level"
+  ) + 
+  theme(legend.position = "bottom")
+
+korea_popmig <- master_long |>
+  filter(country == "KOR", variable %in% c("total_population", "net_migration")) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(names_from = variable, values_from = value) |>
+  arrange(year) |>
+  mutate(
+    pop_growth_pct = (total_population - dplyr::lag(total_population)) /
+                     dplyr::lag(total_population) * 100
+  ) |>
+  filter(!is.na(pop_growth_pct))
+
+korea_popmig_long <- korea_popmig |>
+  mutate(
+    mig_z  = scale(net_migration)[, 1],
+    popg_z = scale(pop_growth_pct)[, 1]
+  ) |>
+  tidyr::pivot_longer(
+    cols = c(mig_z, popg_z),
+    names_to = "series",
+    values_to = "z_value"
+  ) |>
+  mutate(
+    series = dplyr::recode(
+      series,
+      mig_z  = "Net migration (z)",
+      popg_z = "Population growth % (z)"
+    )
+  )
+
+p_popmig_kor <- ggplot(korea_popmig_long, aes(x = year, y = z_value, color = series)) +
+  geom_line(linewidth = 1) +
+  scale_color_manual(
+    values = c(
+      "Net migration (z)"        = "#1b9e77",
+      "Population growth % (z)"  = "#e7298a"
+    ),
+    name = ""
+  ) +
+  theme_minimal(base_size = 12) +
+  scale_x_continuous("Year", breaks = seq(1960, 2020, by = 10)) +
+  labs(
+    title = "Migration & Population Growth",
+    y = "Standardized level"
+  )
+
+
+library(patchwork)
+
+(p_fert_kor | p_gdp_kor) /
+(p_labor_kor | p_popmig_kor)
+
+```
+
+## Deep dive: India
+
+```{r}
+#| fig-width: 10
+#| fig-height: 6
+#| fig-dpi: 300
+
+india_fert <- master_long |>
+  filter(country == "IND", variable == "fertility_rate") |>
+  left_join(country_lookup, by = "country")
+
+p_fert_ind <- ggplot(india_fert, aes(x = year, y = value)) +
+  geom_hline(yintercept = 2.1, linetype = "dashed", color = "grey50") +
+  geom_line(color = "#2c7fb8", linewidth = 1) +
+  scale_y_continuous("Fertility rate", limits = c(0, NA)) +
+  scale_x_continuous("Year", breaks = seq(1960, 2020, by = 10)) +
+  theme_minimal(base_size = 12) +
+  labs(
+    title = "Fertility Rate"
+  )
+
+
+india_gdp <- master_long |>
+  filter(country == "IND", variable == "gdp_capita_const") |>
+  left_join(country_lookup, by = "country")
+
+p_gdp_ind <- ggplot(india_gdp, aes(x = year, y = value)) +
+  geom_line(color = "#1b9e77", linewidth = 1) +
+  scale_y_log10(
+    "GDP per capita (log scale)",
+    labels = scales::label_number(scale_cut = scales::cut_si(""))
+  ) +
+  scale_x_continuous("Year", breaks = seq(1960, 2020, by = 10)) +
+  theme_minimal(base_size = 12) +
+  labs(
+    title = "Economic Growth"
+  )
+
+
+india_labor <- master_long |>
+  filter(country == "IND", variable %in% c("flfpr", "emp_to_pop")) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(names_from = variable, values_from = value) |>
+  filter(!is.na(flfpr), !is.na(emp_to_pop)) |>
+  mutate(
+    flfpr_z = scale(flfpr)[, 1],
+    emp_z   = scale(emp_to_pop)[, 1]
+  ) |>
+  tidyr::pivot_longer(
+    cols = c(flfpr_z, emp_z),
+    names_to = "series",
+    values_to = "z_value"
+  ) |>
+  mutate(
+    series = dplyr::recode(
+      series,
+      flfpr_z = "Female labor force participation (z)",
+      emp_z   = "Employment-to-population (z)"
+    )
+  )
+
+p_labor_ind <- ggplot(india_labor, aes(x = year, y = z_value, color = series)) +
+  geom_line(linewidth = 1) +
+  scale_color_manual(
+    values = c(
+      "Female labor force participation (z)" = "#d95f02",
+      "Employment-to-population (z)"         = "#7570b3"
+    ),
+    name = ""
+  ) +
+  scale_x_continuous("Year", breaks = seq(1990, 2020, by = 10)) +
+  theme_minimal(base_size = 12) +
+  labs(
+    title = "Labor Market Trends",
+    y = "Standardized level"
+  ) + 
+  theme(legend.position = "bottom")
+
+
+india_popmig <- master_long |>
+  filter(country == "IND", variable %in% c("total_population", "net_migration")) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(names_from = variable, values_from = value) |>
+  arrange(year) |>
+  mutate(
+    pop_growth_pct = (total_population - dplyr::lag(total_population)) /
+                     dplyr::lag(total_population) * 100
+  ) |>
+  filter(!is.na(pop_growth_pct))
+
+india_popmig_long <- india_popmig |>
+  mutate(
+    mig_z  = scale(net_migration)[, 1],
+    popg_z = scale(pop_growth_pct)[, 1]
+  ) |>
+  tidyr::pivot_longer(
+    cols = c(mig_z, popg_z),
+    names_to = "series",
+    values_to = "z_value"
+  ) |>
+  mutate(
+    series = dplyr::recode(
+      series,
+      mig_z  = "Net migration (z)",
+      popg_z = "Population growth % (z)"
+    )
+  )
+
+p_popmig_ind <- ggplot(india_popmig_long, aes(x = year, y = z_value, color = series)) +
+  geom_line(linewidth = 1) +
+  scale_color_manual(
+    values = c(
+      "Net migration (z)"        = "#1b9e77",
+      "Population growth % (z)"  = "#e7298a"
+    ),
+    name = ""
+  ) +
+  theme_minimal(base_size = 12) +
+  scale_x_continuous("Year", breaks = seq(1960, 2020, by = 10)) +
+  labs(
+    title = "Migration & Population Growth",
+    y = "Standardized level"
+  )
+
+
+library(patchwork)
+
+(p_fert_ind | p_gdp_ind) /
+(p_labor_ind | p_popmig_ind)
+
+```
+
+
+```{r}
+#| fig-width: 10
+#| fig-height: 6
+#| fig-dpi: 300
+
+poland_fert <- master_long |>
+  filter(country == "POL", variable == "fertility_rate") |>
+  left_join(country_lookup, by = "country")
+
+p_fert_pol <- ggplot(poland_fert, aes(x = year, y = value)) +
+  geom_hline(yintercept = 2.1, linetype = "dashed", color = "grey50") +
+  geom_line(color = "#2c7fb8", linewidth = 1) +
+  scale_y_continuous("Fertility rate", limits = c(0, NA)) +
+  scale_x_continuous("Year", breaks = seq(1960, 2020, by = 10)) +
+  theme_minimal(base_size = 12) +
+  labs(
+    title = "Fertility Rate"
+  )
+
+
+poland_gdp <- master_long |>
+  filter(country == "POL", variable == "gdp_capita_const") |>
+  left_join(country_lookup, by = "country")
+
+p_gdp_pol <- ggplot(poland_gdp, aes(x = year, y = value)) +
+  geom_line(color = "#1b9e77", linewidth = 1) +
+  scale_y_log10(
+    "GDP per capita (log scale)",
+    labels = scales::label_number(scale_cut = scales::cut_si(""))
+  ) +
+  scale_x_continuous("Year", breaks = seq(1960, 2020, by = 10)) +
+  theme_minimal(base_size = 12) +
+  labs(
+    title = "Economic Growth"
+  )
+
+
+poland_labor <- master_long |>
+  filter(country == "POL", variable %in% c("flfpr", "emp_to_pop")) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(names_from = variable, values_from = value) |>
+  filter(!is.na(flfpr), !is.na(emp_to_pop)) |>
+  mutate(
+    flfpr_z = scale(flfpr)[, 1],
+    emp_z   = scale(emp_to_pop)[, 1]
+  ) |>
+  tidyr::pivot_longer(
+    cols = c(flfpr_z, emp_z),
+    names_to = "series",
+    values_to = "z_value"
+  ) |>
+  mutate(
+    series = dplyr::recode(
+      series,
+      flfpr_z = "Female labor force participation (z)",
+      emp_z   = "Employment-to-population (z)"
+    )
+  )
+
+p_labor_pol <- ggplot(poland_labor, aes(x = year, y = z_value, color = series)) +
+  geom_line(linewidth = 1) +
+  scale_color_manual(
+    values = c(
+      "Female labor force participation (z)" = "#d95f02",
+      "Employment-to-population (z)"         = "#7570b3"
+    ),
+    name = ""
+  ) +
+  scale_x_continuous("Year", breaks = seq(1990, 2020, by = 10)) +
+  theme_minimal(base_size = 12) +
+  labs(
+    title = "Labor Market Trends",
+    y = "Standardized level"
+  ) + 
+  theme(legend.position = "bottom")
+
+
+poland_popmig <- master_long |>
+  filter(country == "POL", variable %in% c("total_population", "net_migration")) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(names_from = variable, values_from = value) |>
+  arrange(year) |>
+  mutate(
+    pop_growth_pct = (total_population - dplyr::lag(total_population)) /
+                     dplyr::lag(total_population) * 100
+  ) |>
+  filter(!is.na(pop_growth_pct))
+
+poland_popmig_long <- poland_popmig |>
+  mutate(
+    mig_z  = scale(net_migration)[, 1],
+    popg_z = scale(pop_growth_pct)[, 1]
+  ) |>
+  tidyr::pivot_longer(
+    cols = c(mig_z, popg_z),
+    names_to = "series",
+    values_to = "z_value"
+  ) |>
+  mutate(
+    series = dplyr::recode(
+      series,
+      mig_z  = "Net migration (z)",
+      popg_z = "Population growth % (z)"
+    )
+  )
+
+p_popmig_pol <- ggplot(poland_popmig_long, aes(x = year, y = z_value, color = series)) +
+  geom_line(linewidth = 1) +
+  scale_color_manual(
+    values = c(
+      "Net migration (z)"        = "#1b9e77",
+      "Population growth % (z)"  = "#e7298a"
+    ),
+    name = ""
+  ) +
+  theme_minimal(base_size = 12) +
+  scale_x_continuous("Year", breaks = seq(1960, 2020, by = 10)) +
+  labs(
+    title = "Migration & Population Growth",
+    y = "Standardized level"
+  )
+
+
+library(patchwork)
+
+(p_fert_pol | p_gdp_pol) /
+(p_labor_pol | p_popmig_pol)
+
+```
+
+
+
+```{r}
+#| fig-width: 10
+#| fig-height: 6
+#| fig-dpi: 300
+
+nigeria_fert <- master_long |>
+  filter(country == "NGA", variable == "fertility_rate") |>
+  left_join(country_lookup, by = "country")
+
+p_fert_nga <- ggplot(nigeria_fert, aes(x = year, y = value)) +
+  geom_hline(yintercept = 2.1, linetype = "dashed", color = "grey50") +
+  geom_line(color = "#2c7fb8", linewidth = 1) +
+  scale_y_continuous("Fertility rate", limits = c(0, NA)) +
+  scale_x_continuous("Year", breaks = seq(1960, 2020, by = 10)) +
+  theme_minimal(base_size = 12) +
+  labs(
+    title = "Fertility Rate"
+  )
+
+
+nigeria_gdp <- master_long |>
+  filter(country == "NGA", variable == "gdp_capita_const") |>
+  left_join(country_lookup, by = "country")
+
+p_gdp_nga <- ggplot(nigeria_gdp, aes(x = year, y = value)) +
+  geom_line(color = "#1b9e77", linewidth = 1) +
+  scale_y_log10(
+    "GDP per capita (log scale)",
+    labels = scales::label_number(scale_cut = scales::cut_si(""))
+  ) +
+  scale_x_continuous("Year", breaks = seq(1960, 2020, by = 10)) +
+  theme_minimal(base_size = 12) +
+  labs(
+    title = "Economic Growth"
+  )
+
+
+nigeria_labor <- master_long |>
+  filter(country == "NGA", variable %in% c("flfpr", "emp_to_pop")) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(names_from = variable, values_from = value) |>
+  filter(!is.na(flfpr), !is.na(emp_to_pop)) |>
+  mutate(
+    flfpr_z = scale(flfpr)[, 1],
+    emp_z   = scale(emp_to_pop)[, 1]
+  ) |>
+  tidyr::pivot_longer(
+    cols = c(flfpr_z, emp_z),
+    names_to = "series",
+    values_to = "z_value"
+  ) |>
+  mutate(
+    series = dplyr::recode(
+      series,
+      flfpr_z = "Female labor force participation (z)",
+      emp_z   = "Employment-to-population (z)"
+    )
+  )
+
+p_labor_nga <- ggplot(nigeria_labor, aes(x = year, y = z_value, color = series)) +
+  geom_line(linewidth = 1) +
+  scale_color_manual(
+    values = c(
+      "Female labor force participation (z)" = "#d95f02",
+      "Employment-to-population (z)"         = "#7570b3"
+    ),
+    name = ""
+  ) +
+  scale_x_continuous("Year", breaks = seq(1990, 2020, by = 10)) +
+  theme_minimal(base_size = 12) +
+  labs(
+    title = "Labor Market Trends",
+    y = "Standardized level"
+  ) + 
+  theme(legend.position = "bottom")
+
+
+nigeria_popmig <- master_long |>
+  filter(country == "NGA", variable %in% c("total_population", "net_migration")) |>
+  select(country, year, variable, value) |>
+  tidyr::pivot_wider(names_from = variable, values_from = value) |>
+  arrange(year) |>
+  mutate(
+    pop_growth_pct = (total_population - dplyr::lag(total_population)) /
+                     dplyr::lag(total_population) * 100
+  ) |>
+  filter(!is.na(pop_growth_pct))
+
+nigeria_popmig_long <- nigeria_popmig |>
+  mutate(
+    mig_z  = scale(net_migration)[, 1],
+    popg_z = scale(pop_growth_pct)[, 1]
+  ) |>
+  tidyr::pivot_longer(
+    cols = c(mig_z, popg_z),
+    names_to = "series",
+    values_to = "z_value"
+  ) |>
+  mutate(
+    series = dplyr::recode(
+      series,
+      mig_z  = "Net migration (z)",
+      popg_z = "Population growth % (z)"
+    )
+  )
+
+p_popmig_nga <- ggplot(nigeria_popmig_long, aes(x = year, y = z_value, color = series)) +
+  geom_line(linewidth = 1) +
+  scale_color_manual(
+    values = c(
+      "Net migration (z)"        = "#1b9e77",
+      "Population growth % (z)"  = "#e7298a"
+    ),
+    name = ""
+  ) +
+  theme_minimal(base_size = 12) +
+  scale_x_continuous("Year", breaks = seq(1960, 2020, by = 10)) +
+  labs(
+    title = "Migration & Population Growth",
+    y = "Standardized level"
+  )
+
+
+library(patchwork)
+
+(p_fert_nga | p_gdp_nga) /
+(p_labor_nga | p_popmig_nga)
+
+```
+
