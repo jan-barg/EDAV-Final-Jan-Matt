@@ -195,6 +195,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#pca-similartiy-between-countries" id="toc-pca-similartiy-between-countries" class="nav-link" data-scroll-target="#pca-similartiy-between-countries"><span class="header-section-number">3.5</span> PCA &amp; Similartiy between Countries</a></li>
   <li><a href="#deep-dive-south-korea" id="toc-deep-dive-south-korea" class="nav-link" data-scroll-target="#deep-dive-south-korea"><span class="header-section-number">3.6</span> Deep dive: South Korea</a></li>
   <li><a href="#deep-dive-india" id="toc-deep-dive-india" class="nav-link" data-scroll-target="#deep-dive-india"><span class="header-section-number">3.7</span> Deep dive: India</a></li>
+  <li><a href="#deep-dive-poland" id="toc-deep-dive-poland" class="nav-link" data-scroll-target="#deep-dive-poland"><span class="header-section-number">3.8</span> Deep dive: Poland</a></li>
+  <li><a href="#deep-dive-nigeria" id="toc-deep-dive-nigeria" class="nav-link" data-scroll-target="#deep-dive-nigeria"><span class="header-section-number">3.9</span> Deep dive: Nigeria</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/jan-barg/EDAV-Final-Jan-Matt.git/edit/main/results.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jan-barg/EDAV-Final-Jan-Matt.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -768,7 +770,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position  =</span> <span class="st">"bottom"</span></span>
 <span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="st">"Migration and population growth move together in immigration-heavy countries"</span>,</span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="st">"Migration and population growth together"</span>,</span>
 <span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Each panel shows standardized net migration and population growth rates since 1960"</span></span>
 <span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -781,7 +783,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Note: Canada pop growth mimics migration patterns, Australia as well Poland spike - Ukraininnans</p>
+<p>Across immigration-heavy countries like the Canada, and Australia, net migration and population growth tend to move together, suggesting that inflows increasingly offset low fertility. In contrast, Japan and South Korea show little alignment, with low or negative migration accompanying steadily declining population growth. Poland sits in between, with migration swings. The very notable spike in immigration to Poland occurs right at the start of the Russian invasion of Ukraine, during which, Poland received ca. 1 million Ukrainian refugees.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -875,9 +877,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>This is pretty surprising: Australia and Canada actually experience high population growth from migratoin, but other coutries do not.</p>
-<p>When you interpret this plot, emphasize: ✔ Immigration-heavy countries (Canada, Australia, USA) Population growth tracks migration more clearly Migration has meaningful demographic impact Lines are flat or slightly positive ✔ Low-migration countries (Poland, Japan, Korea) Population growth is dominated by aging and very low fertility Migration is too small to offset this Negative slopes emerge because migration &amp; growth move for different reasons ✔ Conclusion Migration matters only where migration numbers are large relative to the population. In low-migration societies, migration is too small to affect total population change.</p>
-<p>These plots combine levels with growth rates — this induces spurious correlations This is the subtle but important statistical issue. Migration is: net_migration(t) Population growth is: (pop(t+1) – pop(t)) / pop(t) Population(t) has long, slow-moving inertia. Migration(t) is short-term and noisy.</p>
+<p>Across the countries shown, only immigration-heavy economies like Canada and Australia display a clear link between today’s migration levels and population growth in future years, as their trend lines are flat or slightly positive, suggesting that, there, migration meaningfully contributes to demographic expansion. In contrast, Japan, South Korea, and Poland show negative or near-zero relationships: population growth continues to fall regardless of migration because very low fertility and aging dominate overall population change. The broader takeaway is that migration matters only where the migration flows are large relative to the population. In low-migration societies, migration is simply too small to offset structural demographic decline. A final caveat is that these plots compare migration levels with growth rates, which can produce weak or spurious correlations because migration is volatile year-to-year while population growth adjusts slowly over time.</p>
 </section>
 <section id="correlation-and-structural-patterns" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="correlation-and-structural-patterns"><span class="header-section-number">3.4</span> Correlation and structural patterns</h2>
@@ -1343,6 +1343,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</section>
+<section id="deep-dive-poland" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="deep-dive-poland"><span class="header-section-number">3.8</span> Deep dive: Poland</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1477,6 +1480,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+</section>
+<section id="deep-dive-nigeria" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="deep-dive-nigeria"><span class="header-section-number">3.9</span> Deep dive: Nigeria</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
