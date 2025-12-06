@@ -580,12 +580,11 @@ ggplot(pop_mig_scaled, aes(x = year, y = value, color = series)) +
     legend.position  = "bottom"
   ) +
   labs(
-    title    = "Migration and population growth move together in immigration-heavy countries",
+    title    = "Migration and population growth together",
     subtitle = "Each panel shows standardized net migration and population growth rates since 1960"
   )
 ```
-Note: Canada pop growth mimics migration patterns, Australia as well
-Poland spike - Ukraininnans
+Across immigration-heavy countries like the Canada, and Australia, net migration and population growth tend to move together, suggesting that inflows increasingly offset low fertility. In contrast, Japan and South Korea show little alignment, with low or negative migration accompanying steadily declining population growth. Poland sits in between, with migration swings. The very notable spike in immigration to Poland occurs right at the start of the Russian invasion of Ukraine, during which, Poland received ca. 1 million Ukrainian refugees.
 
 
 ```{r}
@@ -675,30 +674,9 @@ ggplot(
 
 ```
 
-This is pretty surprising: Australia and Canada actually experience high population growth from migratoin, but other coutries do not.
-
-When you interpret this plot, emphasize:
-✔ Immigration-heavy countries (Canada, Australia, USA)
-Population growth tracks migration more clearly
-Migration has meaningful demographic impact
-Lines are flat or slightly positive
-✔ Low-migration countries (Poland, Japan, Korea)
-Population growth is dominated by aging and very low fertility
-Migration is too small to offset this
-Negative slopes emerge because migration & growth move for different reasons
-✔ Conclusion
-Migration matters only where migration numbers are large relative to the population.
-In low-migration societies, migration is too small to affect total population change.
-
-These plots combine levels with growth rates — this induces spurious correlations
-This is the subtle but important statistical issue.
-Migration is:
-net_migration(t)
-Population growth is:
-(pop(t+1) – pop(t)) / pop(t)
-Population(t) has long, slow-moving inertia.
-Migration(t) is short-term and noisy.
-
+Across the countries shown, only immigration-heavy economies like Canada and Australia display a clear link between today’s migration levels and population growth in future years, as their trend lines are flat or slightly positive, suggesting that, there, migration meaningfully contributes to demographic expansion. In contrast, Japan, South Korea, and Poland show negative or near-zero relationships: population growth continues to fall regardless of migration because very low fertility and aging dominate overall population change.
+The broader takeaway is that migration matters only where the migration flows are large relative to the population. In low-migration societies, migration is simply too small to offset structural demographic decline.
+A final caveat is that these plots compare migration levels with growth rates, which can produce weak or spurious correlations because migration is volatile year-to-year while population growth adjusts slowly over time.
 
 
 ## Correlation and structural patterns
@@ -1127,6 +1105,7 @@ library(patchwork)
 
 ```
 
+## Deep dive: Poland
 
 ```{r}
 #| fig-width: 10
@@ -1258,7 +1237,7 @@ library(patchwork)
 
 ```
 
-
+## Deep dive: Nigeria
 
 ```{r}
 #| fig-width: 10
