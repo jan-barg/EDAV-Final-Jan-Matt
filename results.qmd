@@ -28,10 +28,6 @@ library(rnaturalearthdata)
 # you'll load master_long/master_wide later when needed
 data_dir  <- "./data-gathering/data/clean"
 end_year  <- 2023L
-```
-
-```{r}
-#| label: load-master-long
 
 master_long <- readr::read_csv(
   file.path(data_dir, "master_long.csv"),
@@ -74,6 +70,7 @@ country_lookup <- tibble::tibble(
   )
 ```
 ## Global fertility trajectories
+### Fertility over time
 ```{r}
 #| label: fertility-faceted
 #| fig-cap: "Fertility rate trajectories (births per woman) for 13 selected countries. The dashed line marks the replacement level of 2.1 births per woman."
@@ -134,10 +131,11 @@ ggplot(fertility_long, aes(x = year, y = value)) +
   )
 ```
 
-!ADD DESCRIPTION HERE!
+For every country in the analysis, we see a decline in fertility rates between 1960 and 2023. While the change varies across the countries, it is interesting to see that all countries except Japan had fertility levels above the replacement rate - and only Nigeria and South Africa (barely!) managed to sustain fertility levels above 2.1 births per woman. The pattern is strikingly similar for Germany, Japan, Sweden, and Poland, which were just around replacement level 65 years ago, and have fallen much below it ever since.
+The decline in fertility is quicker in the US and Australia, and even more so across the first 5 countries in the figure above.
+Out of these, China marks an interesting case: it is the only country that exhibited significant positive growth in fertility rates throughout the 60+ year period. This could stem from several reasons, but the most likely cause seems to be the end of the 1959-1961 Great Chinese Famine. After living conditions stabilized in the country, the citizens were more likely to decide to have children. Because China had not yet implemented fertility-control policies, this rebound appears prominently in the data.
 
-
-
+### Fertility rate heat map
 
 ```{r}
 #| label: fertility-heatmap
@@ -177,10 +175,11 @@ ggplot(fertility_data, aes(x = year, y = country_name, fill = value)) +
 
 
 ```
-!ADD DESCRIPTION!
+In the fertility heat map, we see patterns that converge towards lower fertility, with some interruptions of darker shades. Most notably, Nigeria, which exhibits by far the highest fertility of the 13 countries, is seeing a decline in its fertility. On the other hand, South Korea has been seeing the lowest rates of child birth since the start of the millennium.
 
 ## Fertility vs. other indicators
 
+### GDP per capita over time
 ```{r}
 #| label: gdp-faceted-linear
 #| fig-cap: "Constant GDP per capita (linear scale) for 13 selected countries."
@@ -230,7 +229,14 @@ ggplot(gdp_long, aes(x = year, y = value)) +
   )
 
 ```
+For all the 13 countries, excluding South Africa and Nigeria, we see continuous GDP per capita growth.
+The United States, Canada, Sweden, Australia, Germany, and Japan all show steady and sustained income growth over the entire period. South Korea stands out as the strongest “growth miracle,” rising from extremely low income levels in 1960 to high-income status by 2020.
+Middle-income countries such as Brazil and South Africa show more uneven patterns: periods of growth followed by stagnation or declines, reflecting political and economic instability. Nigeria’s GDP per capita is highly volatile, with several swings, likely caused by oil price cycles and structural instability within the country.
+Nevertheless, each country has much higher GDP per capita in 2023 than in 1960.
+
 NOTE: We tried to group countries into three GDP tiers and give each tier its own y-scale using ggh4x. Although the method should work in theory, it produced layout glitches (empty panels, misaligned strips, overlapping axes) in our setup. After several failed fixes, we reverted to a simpler, reliable approach: a standard facet plot with countries ordered by median GDP.
+
+### Fertility vs GDP per capita
 
 ```{r}
 
@@ -268,7 +274,7 @@ ggplot(fert_gdp, aes(x = gdp_capita_const, y = fertility_rate)) +
   )
 
 ```
-
+When plotting Fertility Rates vs GDP per capita, we see constant decline for most countries. This does not necessarily imply causation, as shown by South Africa and Nigeria: the two countries that experienced high volatility exhibit high irregularity in the plotted patterns, showing that quick significant changes in GDP per capita do not go together with similarly swift changes in fertility rates.
 
 ```{r}
 # #| label: gapminder-fertility-gdp
@@ -390,13 +396,11 @@ ggplot(fert_gdp, aes(x = gdp_capita_const, y = fertility_rate)) +
 
 
 ```
-
+### Yearly snapshots of GDP per capita, population, and fertility
 
 ![](figs/gapminder_fertility_gdp.gif){fig-cap="Gapminder-style animation of fertility vs GDP per capita for the 13 selected countries, 1960–2023."}
-
-
-
-! INTERPRET ALL GRAPHS, ADD TRIPLE HASHTAG TITLES!
+In this animated graph, one can track changes in fertility, GDP per capita, and population over time. Each frame represents one year between 1960 and 2023, and each dot represents one country. As the dot's size grows, so does the country's population. As it moves to the right, its GDP per capita rises, and as it moves down, its fertility decreases. For example, the brown dot that jumps up and down at the beginning, then sharply falls towards the bottom is China - as the animations reflects its quick changes in fertility described above.
+Most countries, particularly European and North American, seem to gravitate towards the bottom right corner (high GDP per capita and low fertility). They also, at least at the start of the animation, grow in size, indicating increasing population. As mentioned above, Nigeria (red dot at the top) stands as the clearest exception. 
 
 ### Fertility vs female labor force participation
 
@@ -444,7 +448,7 @@ ggplot(
     subtitle = "Each panel shows a country's trajectory since 1990, with color indicating year"
   )
 ```
-DO WE KEEP THIS?
+When investigating fertility rates against female labor force participation rates (some speculate women tend to give less births the more they work), we cannot see any clear pattern. For example, in China, higher FLFPR coincides with higher fertility, while in Brazil, the opposite is the case. We therefore cannot confirm the hypothesis of female labor force participation having a negative effect on fertility rate.
 
 ### Fertility vs employment-to-population ratio
 ```{r}
@@ -497,6 +501,8 @@ ggplot(
   )
 
 ```
+As with the FLFPR vs fertility graph, the fertility vs overall employment rate graph does not allow us to draw any sensible conclusions. We therefore cannot speculate, either, that societies where more people work have higher or lower fertility rates.
+
 ## Migration, population growth, and fertility
 
 ```{r}

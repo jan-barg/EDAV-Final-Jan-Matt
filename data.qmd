@@ -402,7 +402,7 @@ if (!dir.exists("./data-gathering/data/processed")) {
 # Save the cleaned, filtered dataset
 write_csv(range_filtered_data, "./data-gathering/data/processed/range_filtered_data.csv")
 
-# Optional: also save RDS (faster, keeps types)
+# also save RDS
 saveRDS(range_filtered_data, "./data-gathering/data/processed/range_filtered_data.rds")
 
 ```
