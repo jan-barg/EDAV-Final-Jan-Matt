@@ -339,7 +339,7 @@ ggplot(plot_df, aes(x = variable, y = country, fill = pct_years_missing)) +
   )
 ```
 
-We see that we are missing significant proportions of Gini Index values for most countries in the covered range. With >40% missing, these are essentially incomputable and not viable for statistical analysis in combination with the other variables. Thus, we can treat the Gini Index as an extra variable that serves a contextual and interpretive role rather than a primary analytical one. It can be used to illustrate patterns or disparities in income inequality where data is available, but it should not be included in quantitative analyses or cross-variable comparisons due to its inconsistent coverage.
+We see that we are missing significant proportions of Gini Index values for most countries in the covered range. With >40% missing, these are essentially incomputable and not viable for statistical analysis in combination with the other variables. Thus, we can treat the Gini Index as an extra variable that serves a contextual and interpretive role rather than a primary analytical one. To decide on this, we need to see if there are uninterrupted series of complete data for multiple countries.
 One more problem that we can observe in the data missingness table is the fact that 46.9% of the data between 1960 and 2023 is missing for GDP per Capita in Poland. Poland's GDP data was only reliably reported after 1989, when the communist regime fell in the country. Thus, historical GDP data prior to the early 1990s is often incomplete or unavailable due to differences in accounting standards, data collection methods, and limited integration with international databases such as the World Bank. Therefore, for Poland, we will retain this gap rather than imputing values to preserve data consistency across sources.
 
 ```{r}
@@ -386,7 +386,7 @@ ggplot(gini_long, aes(x = year, y = country, fill = present)) +
     axis.text.x = element_text(angle = 40, hjust = 1)
   )
 ```
-
+Seeing the missingness patterns of Gini Index, we decided not to use it - with no blocks of non-missing values spanning similar years across multiple countries, we deem the variable not too useful in this analysis.
 
 
 ```{r}
