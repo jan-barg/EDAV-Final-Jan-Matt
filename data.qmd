@@ -168,8 +168,8 @@ The data collection was done using API calls to the FRED and World Bank database
 ## Date Range Selection
 
 ```{r}
-#| label: load-and-coverage
-# Load once
+#| label: coverage-table
+
 master_long <- read_csv(file_path, show_col_types = FALSE) |>
   mutate(
     year  = as.integer(year),
@@ -200,10 +200,7 @@ missing_summary <- master_long |>
     )
   ) |>
   arrange(country, variable)
-```
 
-```{r}
-#| label: coverage-table
 coverage_table <- missing_summary |>
   mutate(
     coverage = ifelse(
@@ -262,21 +259,14 @@ Considering that almost all variables cover data up to 2023, we decide to cap ou
 With the aforementioned date ranges in mind, we can proceed to analyzing missing values, for each variable, in its respective timespan.
 
 ```{r}
-#| label: make-range-filtered-data
+#| label: missing-analysis-window-aware
+
 range_filtered_data <- master_long |>
   inner_join(var_start_years, by = "variable") |>
   filter(year >= start_year, year <= end_year) |>
   select(country, year, variable, value) |>
   arrange(country, variable, year)
 
-# (optional) quick check
-# range_filtered_data |>
-#   group_by(variable) |>
-#   summarise(min_year = min(year), max_year = max(year), .groups = "drop")
-```
-
-```{r}
-#| label: missing-analysis-window-aware
 missing_summary_window <- range_filtered_data |>
   inner_join(var_start_years, by = "variable") |>
   group_by(country, variable, start_year) |>
