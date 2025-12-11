@@ -178,11 +178,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#description" id="toc-description" class="nav-link active" data-scroll-target="#description"><span class="header-section-number">2.1</span> Description</a></li>
-  <li><a href="#data-collection-plan" id="toc-data-collection-plan" class="nav-link" data-scroll-target="#data-collection-plan"><span class="header-section-number">2.2</span> Data Collection Plan</a></li>
+  <li><a href="#data-collection" id="toc-data-collection" class="nav-link" data-scroll-target="#data-collection"><span class="header-section-number">2.2</span> Data Collection</a></li>
   <li><a href="#country-selection" id="toc-country-selection" class="nav-link" data-scroll-target="#country-selection"><span class="header-section-number">2.3</span> Country Selection</a></li>
-  <li><a href="#data-collection" id="toc-data-collection" class="nav-link" data-scroll-target="#data-collection"><span class="header-section-number">2.4</span> Data Collection</a></li>
-  <li><a href="#date-range-selection" id="toc-date-range-selection" class="nav-link" data-scroll-target="#date-range-selection"><span class="header-section-number">2.5</span> Date Range Selection</a></li>
-  <li><a href="#missing-value-analysis" id="toc-missing-value-analysis" class="nav-link" data-scroll-target="#missing-value-analysis"><span class="header-section-number">2.6</span> Missing value analysis</a></li>
+  <li><a href="#date-range-selection" id="toc-date-range-selection" class="nav-link" data-scroll-target="#date-range-selection"><span class="header-section-number">2.4</span> Date Range Selection</a></li>
+  <li><a href="#missing-value-analysis" id="toc-missing-value-analysis" class="nav-link" data-scroll-target="#missing-value-analysis"><span class="header-section-number">2.5</span> Missing value analysis</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/jan-barg/EDAV-Final-Jan-Matt.git/edit/main/data.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jan-barg/EDAV-Final-Jan-Matt.git/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -208,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Our data will come from the <a href="https://www.stlouisfed.org">Federal Reserve Bank of St.&nbsp;Louis’s FRED (Federal Reserve Economic Data)</a> database. FRED compiles and maintains a wide range of economic and demographic indicators collected by government agencies and international organizations such as the World Bank, IMF, and OECD. The data are reported in structured time series format, usually at monthly, quarterly, or annual frequencies depending on the indicator. Each series includes detailed metadata on measurement units, coverage, and source methodology. For our project, we plan to use country-level data on fertility rates and economic growth indicators. One challenge we might face is that the time ranges and reporting frequencies can differ across datasets, which may require some cleaning and alignment before analysis. Since there is no multi-country dataset that covers all the nations we’re interested in, we will write a python script that downloads each investigated country’s data via API and then compiles a master dataset to work with. Here are example datasets for the United States of America that we would use. Many of these are available for multiple countries, hence we would scrape the same datasets, with identical units of measure, for multiple countries.</p>
+<p>Our data comes from the <a href="https://www.stlouisfed.org">Federal Reserve Bank of St.&nbsp;Louis’s FRED (Federal Reserve Economic Data)</a> database. FRED compiles and maintains a wide range of economic and demographic indicators collected by government agencies and international organizations such as the World Bank, IMF, and OECD. The data are reported in structured time series format, usually at monthly, quarterly, or annual frequencies depending on the indicator. Each series includes detailed metadata on measurement units, coverage, and source methodology. For our project, we use country-level data on fertility rates and economic growth indicators. One challenge we faced was that the time ranges and reporting frequencies can differ across datasets, which required some cleaning and extra consideration before being analyzed. Since there is no multi-country dataset that covers all the nations we’re interested in, we wrote a python script that downloads each investigated country’s data via API and then compiles a master dataset to work with. Here are example datasets for the United States of America that we would use. All of these are available for multiple countries, hence we scraped the same datasets, with identical units of measure, for multiple countries.</p>
 <section id="description" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="description"><span class="header-section-number">2.1</span> Description</h2>
 <p><strong>Fertility Rate</strong> — <a href="https://fred.stlouisfed.org/series/SPDYNTFRTINUSA">FRED Series</a> This data set is specifically from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>. It is a time series dataset for the fertility rate in the United States as Births Per Woman from 1960 to 2023.</p>
@@ -219,19 +218,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Total Population</strong> — <a href="https://fred.stlouisfed.org/series/POPTOTUSA647NWDB">FRED Series</a> This data, sourced from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a>, shows the country’s total population. It might be useful in investigating whether immigration policies compensate for below-replacement birthrates.</p>
 <p><strong>Net Migration</strong> — <a href="https://data.worldbank.org/indicator/SM.POP.NETM?locations=US">World Bank Indicator</a> This data set comes from the <a href="https://www.worldbank.org/ext/en/home">World Bank</a> and measures the net migration rate, defined as the difference between the number of immigrants and the number of emigrants for a country over a course of a year. Positive values indicate that more people are entering the country than leaving, while negative values indicate net emigration. This variable is particularly relevant for our analysis, as migration inflows can offset demographic decline caused by falling fertility rates. We also plan to examine possible lag effects between changes in migration and subsequent shifts in population growth.</p>
 </section>
-<section id="data-collection-plan" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="data-collection-plan"><span class="header-section-number">2.2</span> Data Collection Plan</h2>
-<p>For the data collection, we will scrape data for selected countries and then assess <strong>data completeness</strong>, as the datasets vary in their time scope from country to country. Once we evaluate missing data, we aim to address the following questions:</p>
+<section id="data-collection" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="data-collection"><span class="header-section-number">2.2</span> Data Collection</h2>
+<p>For the data collection, we scraped data for selected countries and then assessed <strong>data completeness</strong>, as the datasets vary in their time scope from country to country. Once we evaluated missing data, we to addressed the following questions:</p>
 <ol type="1">
 <li><p><strong>Country Selection:</strong> Which countries provide a holistic overview of birth rates and their correlations with our selected economic and social indicators?</p></li>
 <li><p><strong>Timeframe Selection:</strong> What timeframe allows us to gain valuable insights without having to impute a significant portion of the data (since heavy imputation could introduce inaccuracies)?</p></li>
 <li><p><strong>Handling Missing Data:</strong> How should we address missing values while preserving accuracy and comparability to the highest extent possible?</p></li>
 </ol>
-<p>Our plan is to first compile the raw datasets via API (using Python) for each indicator and country, merge them into a master dataset, and then perform exploratory analysis on the combined and cleaned data.</p>
+<p>We first compiled the raw datasets via API (using Python) for each indicator and country, merged them into a master dataset, and then performed exploratory analysis on the combined and cleaned data. The data collection script is available <a href="https://github.com/jan-barg/EDAV-Final-Jan-Matt/blob/main/data-gathering/datafetch.ipynb">here</a>.</p>
 </section>
 <section id="country-selection" class="level2" data-number="2.3">
 <h2 data-number="2.3" class="anchored" data-anchor-id="country-selection"><span class="header-section-number">2.3</span> Country Selection</h2>
-<p>To gain a holistic global overview of the declining birthrate problem, we decided to focus on 13 countries, spanning all 7 continents, with varying GDP per capita levels. The investigated countries range from highly populated developing economies (e.g.&nbsp;India) to aging advanced economies (e.g.&nbsp;South Korea), and span different stages of demographic transition - from high fertility (Nigeria) to very low fertility (Japan).</p>
+<p>To gain a global overview of the declining birthrate problem, we decided to focus on 13 countries, spanning all 7 continents, with varying GDP per capita levels. The investigated countries range from highly populated developing economies (e.g.&nbsp;India) to aging advanced economies (e.g.&nbsp;South Korea), and span different stages of demographic transition - from high fertility (Nigeria) to very low fertility (Japan).</p>
 <p>The final country selection is structured as follows:</p>
 <table class="caption-top table">
 <colgroup>
@@ -332,12 +331,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="data-collection" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="data-collection"><span class="header-section-number">2.4</span> Data Collection</h2>
-<p>The data collection was done using API calls to the FRED and World Bank databases, using a python script, available <a href="https://github.com/jan-barg/EDAV-Final-Jan-Matt/blob/main/data-gathering/datafetch.ipynb">here</a>. The script created master-wide and master-long datasets, which will be used as the backbone of this project.</p>
-</section>
-<section id="date-range-selection" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="date-range-selection"><span class="header-section-number">2.5</span> Date Range Selection</h2>
+<section id="date-range-selection" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="date-range-selection"><span class="header-section-number">2.4</span> Date Range Selection</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -414,23 +409,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_table_lines</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div id="epuhmxbhjn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#epuhmxbhjn table {
+<div id="fnhjmbhoxn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fnhjmbhoxn table {
   font-family: Arial, system-ui, 'Segoe UI', Roboto, Helvetica, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#epuhmxbhjn thead, #epuhmxbhjn tbody, #epuhmxbhjn tfoot, #epuhmxbhjn tr, #epuhmxbhjn td, #epuhmxbhjn th {
+#fnhjmbhoxn thead, #fnhjmbhoxn tbody, #fnhjmbhoxn tfoot, #fnhjmbhoxn tr, #fnhjmbhoxn td, #fnhjmbhoxn th {
   border-style: none;
 }
 
-#epuhmxbhjn p {
+#fnhjmbhoxn p {
   margin: 0;
   padding: 0;
 }
 
-#epuhmxbhjn .gt_table {
+#fnhjmbhoxn .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -456,12 +451,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#epuhmxbhjn .gt_caption {
+#fnhjmbhoxn .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#epuhmxbhjn .gt_title {
+#fnhjmbhoxn .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -473,7 +468,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#epuhmxbhjn .gt_subtitle {
+#fnhjmbhoxn .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -485,7 +480,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#epuhmxbhjn .gt_heading {
+#fnhjmbhoxn .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -497,13 +492,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#epuhmxbhjn .gt_bottom_border {
+#fnhjmbhoxn .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#epuhmxbhjn .gt_col_headings {
+#fnhjmbhoxn .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -518,7 +513,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#epuhmxbhjn .gt_col_heading {
+#fnhjmbhoxn .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -538,7 +533,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#epuhmxbhjn .gt_column_spanner_outer {
+#fnhjmbhoxn .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -550,15 +545,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#epuhmxbhjn .gt_column_spanner_outer:first-child {
+#fnhjmbhoxn .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#epuhmxbhjn .gt_column_spanner_outer:last-child {
+#fnhjmbhoxn .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#epuhmxbhjn .gt_column_spanner {
+#fnhjmbhoxn .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -570,11 +565,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#epuhmxbhjn .gt_spanner_row {
+#fnhjmbhoxn .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#epuhmxbhjn .gt_group_heading {
+#fnhjmbhoxn .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -600,7 +595,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#epuhmxbhjn .gt_empty_group_heading {
+#fnhjmbhoxn .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -615,15 +610,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#epuhmxbhjn .gt_from_md > :first-child {
+#fnhjmbhoxn .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#epuhmxbhjn .gt_from_md > :last-child {
+#fnhjmbhoxn .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#epuhmxbhjn .gt_row {
+#fnhjmbhoxn .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -642,7 +637,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#epuhmxbhjn .gt_stub {
+#fnhjmbhoxn .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -655,7 +650,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#epuhmxbhjn .gt_stub_row_group {
+#fnhjmbhoxn .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -669,15 +664,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#epuhmxbhjn .gt_row_group_first td {
+#fnhjmbhoxn .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#epuhmxbhjn .gt_row_group_first th {
+#fnhjmbhoxn .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#epuhmxbhjn .gt_summary_row {
+#fnhjmbhoxn .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -687,16 +682,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#epuhmxbhjn .gt_first_summary_row {
+#fnhjmbhoxn .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#epuhmxbhjn .gt_first_summary_row.thick {
+#fnhjmbhoxn .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#epuhmxbhjn .gt_last_summary_row {
+#fnhjmbhoxn .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -706,7 +701,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#epuhmxbhjn .gt_grand_summary_row {
+#fnhjmbhoxn .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -716,7 +711,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#epuhmxbhjn .gt_first_grand_summary_row {
+#fnhjmbhoxn .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -726,7 +721,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#epuhmxbhjn .gt_last_grand_summary_row_top {
+#fnhjmbhoxn .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -736,11 +731,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#epuhmxbhjn .gt_striped {
+#fnhjmbhoxn .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#epuhmxbhjn .gt_table_body {
+#fnhjmbhoxn .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -749,7 +744,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#epuhmxbhjn .gt_footnotes {
+#fnhjmbhoxn .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: solid;
@@ -763,7 +758,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#epuhmxbhjn .gt_footnote {
+#fnhjmbhoxn .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -772,7 +767,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#epuhmxbhjn .gt_sourcenotes {
+#fnhjmbhoxn .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: solid;
@@ -786,7 +781,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#epuhmxbhjn .gt_sourcenote {
+#fnhjmbhoxn .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -794,72 +789,72 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#epuhmxbhjn .gt_left {
+#fnhjmbhoxn .gt_left {
   text-align: left;
 }
 
-#epuhmxbhjn .gt_center {
+#fnhjmbhoxn .gt_center {
   text-align: center;
 }
 
-#epuhmxbhjn .gt_right {
+#fnhjmbhoxn .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#epuhmxbhjn .gt_font_normal {
+#fnhjmbhoxn .gt_font_normal {
   font-weight: normal;
 }
 
-#epuhmxbhjn .gt_font_bold {
+#fnhjmbhoxn .gt_font_bold {
   font-weight: bold;
 }
 
-#epuhmxbhjn .gt_font_italic {
+#fnhjmbhoxn .gt_font_italic {
   font-style: italic;
 }
 
-#epuhmxbhjn .gt_super {
+#fnhjmbhoxn .gt_super {
   font-size: 65%;
 }
 
-#epuhmxbhjn .gt_footnote_marks {
+#fnhjmbhoxn .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#epuhmxbhjn .gt_asterisk {
+#fnhjmbhoxn .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#epuhmxbhjn .gt_indent_1 {
+#fnhjmbhoxn .gt_indent_1 {
   text-indent: 5px;
 }
 
-#epuhmxbhjn .gt_indent_2 {
+#fnhjmbhoxn .gt_indent_2 {
   text-indent: 10px;
 }
 
-#epuhmxbhjn .gt_indent_3 {
+#fnhjmbhoxn .gt_indent_3 {
   text-indent: 15px;
 }
 
-#epuhmxbhjn .gt_indent_4 {
+#fnhjmbhoxn .gt_indent_4 {
   text-indent: 20px;
 }
 
-#epuhmxbhjn .gt_indent_5 {
+#fnhjmbhoxn .gt_indent_5 {
   text-indent: 25px;
 }
 
-#epuhmxbhjn .katex-display {
+#fnhjmbhoxn .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#epuhmxbhjn div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#fnhjmbhoxn div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1029,8 +1024,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>1991–2023 for Employment-to-Population Ratio, Female Labor Force Participation Rate, and Gini Index</li>
 </ul>
 </section>
-<section id="missing-value-analysis" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="missing-value-analysis"><span class="header-section-number">2.6</span> Missing value analysis</h2>
+<section id="missing-value-analysis" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="missing-value-analysis"><span class="header-section-number">2.5</span> Missing value analysis</h2>
 <p>With the aforementioned date ranges in mind, we can proceed to analyzing missing values, for each variable, in its respective timespan.</p>
 <div class="cell">
 <details class="code-fold">

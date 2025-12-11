@@ -61,7 +61,7 @@ compute_year_gaps <- function(yrs_nonmiss) {
 
 # Data
 
-Our data will come from the [Federal Reserve Bank of St. Louis’s FRED (Federal Reserve Economic Data)](https://www.stlouisfed.org) database. FRED compiles and maintains a wide range of economic and demographic indicators collected by government agencies and international organizations such as the World Bank, IMF, and OECD. The data are reported in structured time series format, usually at monthly, quarterly, or annual frequencies depending on the indicator. Each series includes detailed metadata on measurement units, coverage, and source methodology. For our project, we plan to use country-level data on fertility rates and economic growth indicators. One challenge we might face is that the time ranges and reporting frequencies can differ across datasets, which may require some cleaning and alignment before analysis. Since there is no multi-country dataset that covers all the nations we’re interested in, we will write a python script that downloads each investigated country’s data via API and then compiles a master dataset to work with. Here are example datasets for the United States of America that we would use. Many of these are available for multiple countries, hence we would scrape the same datasets, with identical units of measure, for multiple countries.
+Our data comes from the [Federal Reserve Bank of St. Louis’s FRED (Federal Reserve Economic Data)](https://www.stlouisfed.org) database. FRED compiles and maintains a wide range of economic and demographic indicators collected by government agencies and international organizations such as the World Bank, IMF, and OECD. The data are reported in structured time series format, usually at monthly, quarterly, or annual frequencies depending on the indicator. Each series includes detailed metadata on measurement units, coverage, and source methodology. For our project, we use country-level data on fertility rates and economic growth indicators. One challenge we faced was that the time ranges and reporting frequencies can differ across datasets, which required some cleaning and extra consideration before being analyzed. Since there is no multi-country dataset that covers all the nations we’re interested in, we wrote a python script that downloads each investigated country’s data via API and then compiles a master dataset to work with. Here are example datasets for the United States of America that we would use. All of these are available for multiple countries, hence we scraped the same datasets, with identical units of measure, for multiple countries.
 
 ## Description
 
@@ -86,9 +86,9 @@ This data, sourced from the [World Bank](https://www.worldbank.org/ext/en/home),
 **Net Migration** — [World Bank Indicator](https://data.worldbank.org/indicator/SM.POP.NETM?locations=US)
 This data set comes from the [World Bank](https://www.worldbank.org/ext/en/home) and measures the net migration rate, defined as the difference between the number of immigrants and the number of emigrants for a country over a course of a year. Positive values indicate that more people are entering the country than leaving, while negative values indicate net emigration. This variable is particularly relevant for our analysis, as migration inflows can offset demographic decline caused by falling fertility rates. We also plan to examine possible lag effects between changes in migration and subsequent shifts in population growth.
 
-## Data Collection Plan
+## Data Collection
 
-For the data collection, we will scrape data for selected countries and then assess **data completeness**, as the datasets vary in their time scope from country to country. Once we evaluate missing data, we aim to address the following questions:
+For the data collection, we scraped data for selected countries and then assessed **data completeness**, as the datasets vary in their time scope from country to country. Once we evaluated missing data, we to addressed the following questions:
 
 1. **Country Selection:**
    Which countries provide a holistic overview of birth rates and their correlations with our selected economic and social indicators?
@@ -99,11 +99,11 @@ For the data collection, we will scrape data for selected countries and then ass
 3. **Handling Missing Data:**
    How should we address missing values while preserving accuracy and comparability to the highest extent possible?
 
-Our plan is to first compile the raw datasets via API (using Python) for each indicator and country, merge them into a master dataset, and then perform exploratory analysis on the combined and cleaned data.
+We first compiled the raw datasets via API (using Python) for each indicator and country, merged them into a master dataset, and then performed exploratory analysis on the combined and cleaned data. The data collection script is available [here](https://github.com/jan-barg/EDAV-Final-Jan-Matt/blob/main/data-gathering/datafetch.ipynb).
 
 ## Country Selection
 
-To gain a holistic global overview of the declining birthrate problem, we decided to focus on 13 countries, spanning all 7 continents, with varying GDP per capita levels. The investigated countries range from highly populated developing economies (e.g. India) to aging advanced economies (e.g. South Korea), and span different stages of demographic transition - from high fertility (Nigeria) to very low fertility (Japan).
+To gain a global overview of the declining birthrate problem, we decided to focus on 13 countries, spanning all 7 continents, with varying GDP per capita levels. The investigated countries range from highly populated developing economies (e.g. India) to aging advanced economies (e.g. South Korea), and span different stages of demographic transition - from high fertility (Nigeria) to very low fertility (Japan).
 
 The final country selection is structured as follows:
 
@@ -160,10 +160,6 @@ ggplot(world) +
 
 ```
 
-
-## Data Collection
-
-The data collection was done using API calls to the FRED and World Bank databases, using a python script, available [here](https://github.com/jan-barg/EDAV-Final-Jan-Matt/blob/main/data-gathering/datafetch.ipynb). The script created master-wide and master-long datasets, which will be used as the backbone of this project.
 
 ## Date Range Selection
 

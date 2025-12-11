@@ -448,7 +448,7 @@ ggplot(
     subtitle = "Each panel shows a country's trajectory since 1990, with color indicating year"
   )
 ```
-When investigating fertility rates against female labor force participation rates (some speculate women tend to give less births the more they work), we cannot see any clear pattern. For example, in China, higher FLFPR coincides with higher fertility, while in Brazil, the opposite is the case. We therefore cannot confirm the hypothesis of female labor force participation having a negative effect on fertility rate.
+When investigating fertility rates against female labor force participation rates (FLFPR; some speculate women tend to give less births the more they work), we cannot see any clear pattern. For example, in China, higher FLFPR coincides with higher fertility, while in Brazil, the opposite is the case. We therefore cannot confirm the hypothesis of female labor force participation having a negative effect on fertility rate.
 
 ### Fertility vs employment-to-population ratio
 ```{r}
@@ -766,9 +766,10 @@ plot_corr_heatmap(cor_mat_90_23, "Correlation Structure (1990–2023)")
 
 ```
 When investigating the same correlations in the years 1990-2023, we see a few changes. In these years:
-- The negative correlation between GDP per capita and fertility rate was less pronounced
-- Conversely, the positive correlation between net migration and GDP per capita is stronger
-- There is a strong positive correlation between employment-to-population ratio and female labor force participation ratio
+
+* The negative correlation between GDP per capita and fertility rate was less pronounced
+* Conversely, the positive correlation between net migration and GDP per capita is stronger
+* There is a strong positive correlation between employment-to-population ratio and female labor force participation ratio
 
 
 ```{r}
@@ -827,9 +828,11 @@ India, South Africa, Poland, and Brazil form a second group of countries, being 
 To the right, USA and China are grouped together (reflecting similar overall averages despite very different trajectories).
 Finally, Canada, Sweden, Australia, Germany, Japan, and South Korea form the tightest cluster, having advanced economies with very low fertility and strong labor-force attachment.
 We thus see a very familiar pattern:
-- High-fertility, lower-income countries group together
-- Middle-income transitional economies group together
-- Low-fertility, high-income economies group together
+
+* High-fertility, lower-income countries group together
+* Middle-income transitional economies group together
+* Low-fertility, high-income economies group together
+
 NOTE: The method mostly takes into account similarity in averaged levels, not trends, so countries that exhibit similar averages over time (e.g. Japan and South Korea) are grouped tightly even if their historical patterns differ.
 
 ## Deep dive: South Korea
