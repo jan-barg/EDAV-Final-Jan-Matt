@@ -12,9 +12,10 @@ Third, the analysis is only exploratory: although some relationships might look 
 There are also limitations to the data we chose, and they constrained what we could do. With net migration being noisy for some countries, and behaving erratically sometimes, we didn't have full historical context for the analyzed countries to know what caused unpredicted spikes. Moreover, fertility and GDP are available on long timescales, but labor metrics begin only in the early 1990s, making long-run comparisons between these impossible. We would have benefited from socio-economic data, such as urbanization rates or education levels, because there are multiple plausible explanations for fertility decline.
 
 Had we had more time or data, there are several directions we would pursue:
-- Expanding beyond the 13-country sample to see if the patterns we observe are parts of broader regional clusters.
-- Integrating policy variables, such as parental leave, childcare subsidies, or family planning laws
-- Investigating more detailed migration data, distinguishing between permanent, temporary, and asylum flows to better understand how migration contributes to population growth in countries below replacement fertility.
+
+* Expanding beyond the 13-country sample to see if the patterns we observe are parts of broader regional clusters.
+* Integrating policy variables, such as parental leave, childcare subsidies, or family planning laws
+* Investigating more detailed migration data, distinguishing between permanent, temporary, and asylum flows to better understand how migration contributes to population growth in countries below replacement fertility.
 
 During the investigation, we were surprised with how consistent the long-run decline in fertility has been between countries with vastly different locations, cultures, histories, and economic trajectories. We also expected to see clearer relationships between fertility and labor-market variables, but the data showed little uniformity: in some countries, rising female labor force participation rates coincided with falling fertility, while in others, the two moved in the same direction. These inconsistencies showed us an important takeaway: visual patterns appear simple at first, but they often mask complex, country-specific mechanisms underneath.
 
